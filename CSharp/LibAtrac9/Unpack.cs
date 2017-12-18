@@ -235,14 +235,14 @@ namespace LibAtrac9
             {
                 int bexMode = reader.ReadInt(2);
                 channel.BexMode = bexBand > 2 ? bexMode : 4;
-                channel.BexValueCount = Tables.BexEncodedValueCounts[channel.BexMode][bexBand];
+                channel.BexValueCount = BandExtension.BexEncodedValueCounts[channel.BexMode][bexBand];
             }
 
             void ReadData(Channel channel)
             {
                 for (int i = 0; i < channel.BexValueCount; i++)
                 {
-                    int dataLength = Tables.BexDataLengths[channel.BexMode][bexBand][i];
+                    int dataLength = BandExtension.BexDataLengths[channel.BexMode][bexBand][i];
                     channel.BexValues[i] = reader.ReadInt(dataLength);
                 }
             }

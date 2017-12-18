@@ -29,59 +29,59 @@
         }
 
         // For scale factor table names, {letter}{number} correspond to the signedness and word length
-        public static readonly byte[] ScaleFactorsA1Bits =
+        private static readonly byte[] ScaleFactorsA1Bits =
         {
             1, 1
         };
 
-        public static readonly short[] ScaleFactorsA1Codes =
+        private static readonly short[] ScaleFactorsA1Codes =
         {
             0x00, 0x01
         };
 
-        public static readonly byte[] ScaleFactorsA2Bits =
+        private static readonly byte[] ScaleFactorsA2Bits =
         {
             1, 3, 3, 2
         };
 
-        public static readonly short[] ScaleFactorsA2Codes =
+        private static readonly short[] ScaleFactorsA2Codes =
         {
             0x00, 0x06, 0x07, 0x02
         };
 
-        public static readonly byte[] ScaleFactorsA3Bits =
+        private static readonly byte[] ScaleFactorsA3Bits =
         {
             2, 2, 4, 6, 6, 5, 3, 2
         };
 
-        public static readonly short[] ScaleFactorsA3Codes =
+        private static readonly short[] ScaleFactorsA3Codes =
         {
             0x00, 0x01, 0x0E, 0x3E, 0x3F, 0x1E, 0x06, 0x02
         };
 
-        public static readonly byte[] ScaleFactorsA4Bits =
+        private static readonly byte[] ScaleFactorsA4Bits =
         {
             2, 2, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 6, 5, 4, 2
         };
 
-        public static readonly short[] ScaleFactorsA4Codes =
+        private static readonly short[] ScaleFactorsA4Codes =
         {
             0x01, 0x02, 0x00, 0x06, 0x0F, 0x13, 0x23, 0x24, 0x25, 0x22, 0x21, 0x20, 0x0E, 0x05, 0x01, 0x03
         };
 
-        public static readonly byte[] ScaleFactorsA5Bits =
+        private static readonly byte[] ScaleFactorsA5Bits =
         {
             2, 3, 3, 4, 5, 5, 6, 7, 7, 8, 8, 8, 8, 8, 8, 8,
             8, 8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 6, 5, 5, 4, 3
         };
 
-        public static readonly short[] ScaleFactorsA5Codes =
+        private static readonly short[] ScaleFactorsA5Codes =
         {
             0x02, 0x01, 0x07, 0x0D, 0x0C, 0x18, 0x1B, 0x21, 0x3F, 0x6A, 0x6B, 0x68, 0x73, 0x79, 0x7C, 0x7D,
             0x7A, 0x7B, 0x78, 0x72, 0x44, 0x45, 0x47, 0x46, 0x69, 0x38, 0x20, 0x1D, 0x19, 0x09, 0x05, 0x00
         };
 
-        public static readonly byte[] ScaleFactorsA6Bits =
+        private static readonly byte[] ScaleFactorsA6Bits =
         {
             3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 8, 8, 8, 8, 8,
             8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
@@ -89,7 +89,7 @@
             8, 8, 8, 8, 8, 7, 7, 7, 6, 6, 5, 5, 5, 4, 4, 4
         };
 
-        public static readonly short[] ScaleFactorsA6Codes =
+        private static readonly short[] ScaleFactorsA6Codes =
         {
             0x00, 0x01, 0x04, 0x05, 0x12, 0x13, 0x2E, 0x2F, 0x30, 0x66, 0x67, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA,
             0xDB, 0xDC, 0xDD, 0xDE, 0xDF, 0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7, 0xE8, 0xE9, 0xEA,
@@ -97,43 +97,43 @@
             0xFB, 0xFC, 0xFD, 0xFE, 0xFF, 0x68, 0x69, 0x6A, 0x31, 0x32, 0x14, 0x15, 0x16, 0x06, 0x07, 0x08
         };
 
-        public static readonly byte[] ScaleFactorsB2Bits =
+        private static readonly byte[] ScaleFactorsB2Bits =
         {
             1, 2, 0, 2
         };
 
-        public static readonly short[] ScaleFactorsB2Codes =
+        private static readonly short[] ScaleFactorsB2Codes =
         {
             0x00, 0x03, 0x00, 0x02
         };
 
-        public static readonly byte[] ScaleFactorsB3Bits =
+        private static readonly byte[] ScaleFactorsB3Bits =
         {
             1, 3, 5, 6, 0, 6, 4, 2
         };
 
-        public static readonly short[] ScaleFactorsB3Codes =
+        private static readonly short[] ScaleFactorsB3Codes =
         {
             0x01, 0x00, 0x04, 0x0B, 0x00, 0x0A, 0x03, 0x01
         };
 
-        public static readonly byte[] ScaleFactorsB4Bits =
+        private static readonly byte[] ScaleFactorsB4Bits =
         {
             1, 3, 4, 5, 5, 7, 8, 8, 0, 8, 8, 7, 6, 6, 4, 3
         };
 
-        public static readonly short[] ScaleFactorsB4Codes =
+        private static readonly short[] ScaleFactorsB4Codes =
         {
             0x01, 0x01, 0x04, 0x0E, 0x0F, 0x2C, 0x5A, 0x5D, 0x00, 0x5C, 0x5B, 0x2F, 0x15, 0x14, 0x06, 0x00
         };
 
-        public static readonly byte[] ScaleFactorsB5Bits =
+        private static readonly byte[] ScaleFactorsB5Bits =
         {
             3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 8, 8,
             8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 3
         };
 
-        public static readonly short[] ScaleFactorsB5Codes =
+        private static readonly short[] ScaleFactorsB5Codes =
         {
             0x00, 0x05, 0x07, 0x0C, 0x04, 0x02, 0x03, 0x05, 0x09, 0x10, 0x23, 0x33, 0x36, 0x6E, 0x60, 0x65,
             0x62, 0x61, 0x63, 0x64, 0x6F, 0x6D, 0x6C, 0x6B, 0x6A, 0x68, 0x69, 0x45, 0x44, 0x37, 0x1A, 0x07
@@ -141,17 +141,17 @@
 
         // For spectrum table names, {letter}{number}{number} correspond to the
         // codebook set, word length, and band group
-        public static readonly byte[] SpectrumA21Bits =
+        private static readonly byte[] SpectrumA21Bits =
         {
             0, 3, 0, 3, 3, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 3
         };
 
-        public static readonly short[] SpectrumA21Codes =
+        private static readonly short[] SpectrumA21Codes =
         {
             0x00, 0x00, 0x00, 0x01, 0x03, 0x07, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x02, 0x05, 0x00, 0x06
         };
 
-        public static readonly byte[] SpectrumA22Bits =
+        private static readonly byte[] SpectrumA22Bits =
         {
             0, 4, 0, 4, 5, 6, 0, 6, 0, 0, 0, 0, 5, 6, 0, 6,
             5, 6, 0, 6, 6, 7, 0, 7, 0, 0, 0, 0, 6, 7, 0, 7,
@@ -171,7 +171,7 @@
             6, 7, 0, 7, 7, 7, 0, 8, 0, 0, 0, 0, 7, 8, 0, 8
         };
 
-        public static readonly short[] SpectrumA22Codes =
+        private static readonly short[] SpectrumA22Codes =
         {
             0x00, 0x02, 0x00, 0x03, 0x10, 0x3C, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x11, 0x3E, 0x00, 0x3D,
             0x0E, 0x00, 0x00, 0x39, 0x18, 0x26, 0x00, 0x75, 0x00, 0x00, 0x00, 0x00, 0x1B, 0x24, 0x00, 0x6D,
@@ -191,7 +191,7 @@
             0x27, 0x62, 0x00, 0x05, 0x66, 0x0C, 0x00, 0xA1, 0x00, 0x00, 0x00, 0x00, 0x23, 0x96, 0x00, 0xA3
         };
 
-        public static readonly byte[] SpectrumA23Bits =
+        private static readonly byte[] SpectrumA23Bits =
         {
             3, 4, 0, 4, 5, 6, 0, 6, 0, 0, 0, 0, 5, 6, 0, 6,
             5, 7, 0, 6, 6, 8, 0, 7, 0, 0, 0, 0, 6, 8, 0, 7,
@@ -211,7 +211,7 @@
             6, 7, 0, 8, 7, 8, 0, 9, 0, 0, 0, 0, 8, 9, 0, 9
         };
 
-        public static readonly short[] SpectrumA23Codes =
+        private static readonly short[] SpectrumA23Codes =
         {
             0x006, 0x002, 0x000, 0x003, 0x016, 0x01E, 0x000, 0x021, 0x000, 0x000, 0x000, 0x000,
             0x017, 0x020, 0x000, 0x01F, 0x01C, 0x054, 0x000, 0x027, 0x010, 0x0A6, 0x000, 0x027,
@@ -237,7 +237,7 @@
             0x0A3, 0x122, 0x000, 0x15B
         };
 
-        public static readonly byte[] SpectrumA24Bits =
+        private static readonly byte[] SpectrumA24Bits =
         {
             02, 04, 00, 04, 05, 06, 00, 06, 00, 00, 00, 00, 05, 06, 00, 06,
             05, 07, 00, 06, 06, 08, 00, 08, 00, 00, 00, 00, 06, 08, 00, 08,
@@ -257,7 +257,7 @@
             06, 08, 00, 09, 08, 09, 00, 10, 00, 00, 00, 00, 08, 10, 00, 10
         };
 
-        public static readonly short[] SpectrumA24Codes =
+        private static readonly short[] SpectrumA24Codes =
         {
             0x002, 0x002, 0x000, 0x003, 0x01E, 0x010, 0x000, 0x013, 0x000, 0x000, 0x000, 0x000,
             0x01F, 0x012, 0x000, 0x011, 0x01A, 0x030, 0x000, 0x01B, 0x000, 0x064, 0x000, 0x0C1,
@@ -282,8 +282,8 @@
             0x005, 0x076, 0x000, 0x0FF, 0x072, 0x0E0, 0x000, 0x339, 0x000, 0x000, 0x000, 0x000,
             0x051, 0x1F8, 0x000, 0x33B
         };
-        
-        public static readonly byte[] SpectrumA31Bits =
+
+        private static readonly byte[] SpectrumA31Bits =
         {
             0, 0, 4, 5, 0, 5, 4, 0, 0, 0, 5, 5, 0, 5, 5, 0,
             5, 5, 6, 6, 0, 6, 5, 5, 5, 6, 6, 7, 0, 7, 6, 6,
@@ -291,7 +291,7 @@
             5, 5, 5, 6, 0, 6, 6, 5, 0, 0, 5, 5, 0, 5, 5, 0
         };
 
-        public static readonly short[] SpectrumA31Codes =
+        private static readonly short[] SpectrumA31Codes =
         {
             0x00, 0x00, 0x02, 0x18, 0x00, 0x19, 0x03, 0x00, 0x00, 0x00, 0x12, 0x02, 0x00, 0x09, 0x15, 0x00,
             0x1A, 0x0A, 0x3E, 0x2C, 0x00, 0x2F, 0x01, 0x0D, 0x0E, 0x38, 0x20, 0x78, 0x00, 0x7B, 0x23, 0x3B,
@@ -299,7 +299,7 @@
             0x1B, 0x0C, 0x00, 0x2E, 0x00, 0x2D, 0x3F, 0x0B, 0x00, 0x00, 0x14, 0x08, 0x00, 0x03, 0x13, 0x00
         };
 
-        public static readonly byte[] SpectrumA32Bits =
+        private static readonly byte[] SpectrumA32Bits =
         {
             4, 5, 5, 6, 0, 6, 5, 5, 5, 6, 5, 6, 0, 6, 5, 5,
             5, 5, 6, 7, 0, 7, 6, 5, 6, 6, 7, 7, 0, 7, 7, 6,
@@ -307,7 +307,7 @@
             5, 5, 6, 7, 0, 7, 6, 5, 5, 5, 5, 6, 0, 6, 5, 6
         };
 
-        public static readonly short[] SpectrumA32Codes =
+        private static readonly short[] SpectrumA32Codes =
         {
             0x0D, 0x18, 0x16, 0x3A, 0x00, 0x3B, 0x17, 0x19, 0x12, 0x3E, 0x08, 0x1C, 0x00, 0x1B, 0x07, 0x01,
             0x10, 0x02, 0x28, 0x78, 0x00, 0x7B, 0x1F, 0x05, 0x2A, 0x16, 0x72, 0x2A, 0x00, 0x29, 0x71, 0x19,
@@ -315,7 +315,7 @@
             0x11, 0x04, 0x1E, 0x7A, 0x00, 0x79, 0x29, 0x03, 0x13, 0x00, 0x06, 0x1A, 0x00, 0x1D, 0x09, 0x3F
         };
 
-        public static readonly byte[] SpectrumA33Bits =
+        private static readonly byte[] SpectrumA33Bits =
         {
             3, 4, 5, 6, 0, 6, 5, 4, 4, 5, 6, 7, 0, 7, 6, 5,
             5, 6, 6, 7, 0, 7, 6, 6, 6, 7, 8, 8, 0, 8, 8, 7,
@@ -323,7 +323,7 @@
             5, 6, 6, 7, 0, 7, 6, 6, 4, 5, 6, 7, 0, 7, 6, 5
         };
 
-        public static readonly short[] SpectrumA33Codes =
+        private static readonly short[] SpectrumA33Codes =
         {
             0x05, 0x06, 0x10, 0x08, 0x00, 0x09, 0x11, 0x07, 0x04, 0x12, 0x3E, 0x6A, 0x00, 0x6D, 0x3D, 0x19,
             0x06, 0x3A, 0x06, 0x02, 0x00, 0x01, 0x05, 0x39, 0x02, 0x16, 0xDC, 0x2A, 0x00, 0x29, 0xDF, 0x69,
@@ -331,7 +331,7 @@
             0x07, 0x38, 0x04, 0x00, 0x00, 0x03, 0x07, 0x3B, 0x05, 0x18, 0x3C, 0x6C, 0x00, 0x6B, 0x3F, 0x13
         };
 
-        public static readonly byte[] SpectrumA34Bits =
+        private static readonly byte[] SpectrumA34Bits =
         {
             02, 04, 05, 07, 00, 07, 05, 04, 04, 05, 06, 08, 00, 08, 06, 05,
             05, 06, 07, 08, 00, 08, 07, 06, 07, 08, 08, 10, 00, 10, 09, 08,
@@ -339,7 +339,7 @@
             05, 06, 07, 08, 00, 08, 07, 06, 04, 05, 06, 08, 00, 08, 06, 05
         };
 
-        public static readonly short[] SpectrumA34Codes =
+        private static readonly short[] SpectrumA34Codes =
         {
             0x000, 0x00A, 0x00A, 0x034, 0x000, 0x035, 0x00B, 0x00B, 0x008, 0x01C, 0x032, 0x0DA,
             0x000, 0x0DD, 0x035, 0x01F, 0x008, 0x01E, 0x03A, 0x06C, 0x000, 0x063, 0x039, 0x031,
@@ -349,7 +349,7 @@
             0x000, 0x0DB, 0x033, 0x01D
         };
 
-        public static readonly byte[] SpectrumA41Bits =
+        private static readonly byte[] SpectrumA41Bits =
         {
             0, 0, 0, 0, 6, 6, 7, 7, 0, 7, 7, 6, 6, 0, 0, 0,
             0, 0, 0, 0, 7, 7, 7, 7, 0, 7, 7, 7, 6, 0, 0, 0,
@@ -369,7 +369,7 @@
             0, 0, 0, 0, 6, 7, 7, 7, 0, 7, 7, 7, 7, 0, 0, 0
         };
 
-        public static readonly short[] SpectrumA41Codes =
+        private static readonly short[] SpectrumA41Codes =
         {
             0x000, 0x000, 0x000, 0x000, 0x018, 0x00E, 0x05E, 0x028, 0x000, 0x029, 0x05F, 0x00F,
             0x019, 0x000, 0x000, 0x000, 0x000, 0x000, 0x000, 0x000, 0x076, 0x06E, 0x03E, 0x004,
@@ -395,7 +395,7 @@
             0x077, 0x000, 0x000, 0x000
         };
 
-        public static readonly byte[] SpectrumA42Bits =
+        private static readonly byte[] SpectrumA42Bits =
         {
             05, 06, 07, 07, 07, 07, 08, 08, 00, 08, 08, 07, 07, 07, 07, 06,
             06, 07, 07, 08, 07, 07, 08, 08, 00, 08, 08, 07, 07, 08, 07, 07,
@@ -415,7 +415,7 @@
             06, 07, 07, 08, 07, 07, 08, 08, 00, 08, 08, 07, 07, 08, 07, 07
         };
 
-        public static readonly short[] SpectrumA42Codes =
+        private static readonly short[] SpectrumA42Codes =
         {
             0x003, 0x018, 0x058, 0x000, 0x066, 0x03C, 0x0D6, 0x07C, 0x000, 0x07D, 0x0D7, 0x03D,
             0x067, 0x001, 0x059, 0x019, 0x002, 0x064, 0x036, 0x0DA, 0x04C, 0x01C, 0x0BE, 0x02C,
@@ -441,7 +441,7 @@
             0x04D, 0x0DB, 0x037, 0x065
         };
 
-        public static readonly byte[] SpectrumA43Bits =
+        private static readonly byte[] SpectrumA43Bits =
         {
             04, 06, 06, 07, 07, 08, 08, 09, 00, 09, 08, 08, 07, 07, 06, 06,
             05, 06, 07, 07, 07, 08, 08, 09, 00, 09, 08, 08, 07, 07, 07, 06,
@@ -461,7 +461,7 @@
             05, 06, 07, 07, 07, 08, 08, 09, 00, 09, 08, 08, 07, 07, 07, 06
         };
 
-        public static readonly short[] SpectrumA43Codes =
+        private static readonly short[] SpectrumA43Codes =
         {
             0x002, 0x03E, 0x016, 0x060, 0x04E, 0x0DC, 0x04A, 0x130, 0x000, 0x131, 0x04B, 0x0DD,
             0x04F, 0x061, 0x017, 0x03F, 0x002, 0x02C, 0x076, 0x042, 0x034, 0x0CE, 0x002, 0x0E8,
@@ -487,7 +487,7 @@
             0x035, 0x043, 0x077, 0x02D
         };
 
-        public static readonly byte[] SpectrumA44Bits =
+        private static readonly byte[] SpectrumA44Bits =
         {
             04, 05, 06, 07, 07, 08, 09, 10, 00, 10, 09, 08, 07, 07, 06, 05,
             05, 06, 06, 07, 07, 08, 09, 10, 00, 10, 09, 08, 07, 07, 06, 06,
@@ -507,7 +507,7 @@
             05, 06, 06, 07, 07, 08, 09, 10, 00, 10, 09, 08, 07, 07, 06, 06
         };
 
-        public static readonly short[] SpectrumA44Codes =
+        private static readonly short[] SpectrumA44Codes =
         {
             0x00A, 0x012, 0x030, 0x06E, 0x024, 0x074, 0x0EC, 0x07E, 0x000, 0x07F, 0x0ED, 0x075,
             0x025, 0x06F, 0x031, 0x013, 0x010, 0x03C, 0x018, 0x05A, 0x002, 0x046, 0x09E, 0x07C,
@@ -533,55 +533,55 @@
             0x003, 0x05B, 0x019, 0x03D
         };
 
-        public static readonly byte[] SpectrumA51Bits =
+        private static readonly byte[] SpectrumA51Bits =
         {
             5, 5, 5, 5, 5, 6, 6, 6, 4, 4, 5, 5, 5, 5, 5, 5,
             0, 5, 5, 5, 5, 5, 5, 4, 4, 6, 6, 6, 5, 5, 5, 5
         };
 
-        public static readonly short[] SpectrumA51Codes =
+        private static readonly short[] SpectrumA51Codes =
         {
             0x19, 0x16, 0x12, 0x0E, 0x06, 0x3A, 0x38, 0x30, 0x00, 0x04, 0x1E, 0x1A, 0x14, 0x10, 0x0C, 0x04,
             0x00, 0x05, 0x0D, 0x11, 0x15, 0x1B, 0x1F, 0x05, 0x01, 0x31, 0x39, 0x3B, 0x07, 0x0F, 0x13, 0x17
         };
 
-        public static readonly byte[] SpectrumA52Bits =
+        private static readonly byte[] SpectrumA52Bits =
         {
             4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6,
             0, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4
         };
 
-        public static readonly short[] SpectrumA52Codes =
+        private static readonly short[] SpectrumA52Codes =
         {
             0x09, 0x04, 0x00, 0x1E, 0x1A, 0x14, 0x0C, 0x06, 0x18, 0x16, 0x0E, 0x04, 0x3A, 0x38, 0x22, 0x20,
             0x00, 0x21, 0x23, 0x39, 0x3B, 0x05, 0x0F, 0x17, 0x19, 0x07, 0x0D, 0x15, 0x1B, 0x1F, 0x01, 0x05
         };
 
-        public static readonly byte[] SpectrumA53Bits =
+        private static readonly byte[] SpectrumA53Bits =
         {
             3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 7, 7, 7, 7,
             0, 7, 7, 7, 7, 6, 6, 5, 5, 5, 5, 5, 5, 4, 4, 4
         };
 
-        public static readonly short[] SpectrumA53Codes =
+        private static readonly short[] SpectrumA53Codes =
         {
             0x00, 0x0C, 0x08, 0x04, 0x1E, 0x16, 0x14, 0x06, 0x0C, 0x04, 0x38, 0x1E, 0x76, 0x74, 0x3A, 0x38,
             0x00, 0x39, 0x3B, 0x75, 0x77, 0x1F, 0x39, 0x05, 0x0D, 0x07, 0x15, 0x17, 0x1F, 0x05, 0x09, 0x0D
         };
 
-        public static readonly byte[] SpectrumA54Bits =
+        private static readonly byte[] SpectrumA54Bits =
         {
             3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8,
             0, 8, 8, 7, 7, 7, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4
         };
 
-        public static readonly short[] SpectrumA54Codes =
+        private static readonly short[] SpectrumA54Codes =
         {
             0x02, 0x0E, 0x0A, 0x08, 0x02, 0x1A, 0x0E, 0x02, 0x00, 0x30, 0x18, 0x66, 0x36, 0x34, 0xCA, 0xC8,
             0x00, 0xC9, 0xCB, 0x35, 0x37, 0x67, 0x19, 0x31, 0x01, 0x03, 0x0F, 0x1B, 0x03, 0x09, 0x0B, 0x0F
         };
 
-        public static readonly byte[] SpectrumA61Bits =
+        private static readonly byte[] SpectrumA61Bits =
         {
             6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7,
             5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
@@ -589,7 +589,7 @@
             5, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6
         };
 
-        public static readonly short[] SpectrumA61Codes =
+        private static readonly short[] SpectrumA61Codes =
         {
             0x35, 0x30, 0x2A, 0x28, 0x24, 0x20, 0x18, 0x0E, 0x0C, 0x7E, 0x7C, 0x72, 0x70, 0x68, 0x5E, 0x5C,
             0x04, 0x0E, 0x08, 0x00, 0x3C, 0x3A, 0x36, 0x32, 0x2C, 0x26, 0x22, 0x1A, 0x16, 0x14, 0x06, 0x04,
@@ -597,7 +597,7 @@
             0x05, 0x5D, 0x5F, 0x69, 0x71, 0x73, 0x7D, 0x7F, 0x0D, 0x0F, 0x19, 0x21, 0x25, 0x29, 0x2B, 0x31
         };
 
-        public static readonly byte[] SpectrumA62Bits =
+        private static readonly byte[] SpectrumA62Bits =
         {
             5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
             6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7,
@@ -605,7 +605,7 @@
             6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5
         };
 
-        public static readonly short[] SpectrumA62Codes =
+        private static readonly short[] SpectrumA62Codes =
         {
             0x14, 0x0E, 0x08, 0x04, 0x02, 0x3E, 0x3C, 0x38, 0x34, 0x30, 0x2A, 0x24, 0x1A, 0x18, 0x0E, 0x02,
             0x32, 0x36, 0x2C, 0x26, 0x20, 0x16, 0x0C, 0x00, 0x76, 0x74, 0x5E, 0x5C, 0x46, 0x44, 0x2A, 0x28,
@@ -613,7 +613,7 @@
             0x33, 0x03, 0x0F, 0x19, 0x1B, 0x25, 0x2B, 0x31, 0x35, 0x39, 0x3D, 0x3F, 0x03, 0x05, 0x09, 0x0F
         };
 
-        public static readonly byte[] SpectrumA63Bits =
+        private static readonly byte[] SpectrumA63Bits =
         {
             4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6,
             6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8,
@@ -621,7 +621,7 @@
             6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5
         };
 
-        public static readonly short[] SpectrumA63Codes =
+        private static readonly short[] SpectrumA63Codes =
         {
             0x00, 0x1C, 0x18, 0x14, 0x10, 0x0A, 0x08, 0x02, 0x3E, 0x36, 0x2E, 0x2C, 0x24, 0x1C, 0x0E, 0x08,
             0x1E, 0x1A, 0x0C, 0x7A, 0x6A, 0x68, 0x4C, 0x32, 0x16, 0x14, 0xF2, 0xF0, 0x9E, 0x9C, 0x62, 0x60,
@@ -629,7 +629,7 @@
             0x1F, 0x09, 0x0F, 0x1D, 0x25, 0x2D, 0x2F, 0x37, 0x3F, 0x03, 0x09, 0x0B, 0x11, 0x15, 0x19, 0x1D
         };
 
-        public static readonly byte[] SpectrumA64Bits =
+        private static readonly byte[] SpectrumA64Bits =
         {
             4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7,
             6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9,
@@ -637,7 +637,7 @@
             6, 7, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 4
         };
 
-        public static readonly short[] SpectrumA64Codes =
+        private static readonly short[] SpectrumA64Codes =
         {
             0x006, 0x002, 0x01C, 0x01A, 0x016, 0x012, 0x00E, 0x00A, 0x002, 0x03E, 0x032, 0x02A,
             0x022, 0x020, 0x010, 0x07A, 0x000, 0x078, 0x060, 0x050, 0x024, 0x006, 0x0C6, 0x0C4,
@@ -647,7 +647,7 @@
             0x017, 0x01B, 0x01D, 0x003
         };
 
-        public static readonly byte[] SpectrumA71Bits =
+        private static readonly byte[] SpectrumA71Bits =
         {
             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
             7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
@@ -659,7 +659,7 @@
             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
         };
 
-        public static readonly short[] SpectrumA71Codes =
+        private static readonly short[] SpectrumA71Codes =
         {
             0x6C, 0x66, 0x62, 0x5C, 0x56, 0x50, 0x52, 0x4E, 0x48, 0x3E, 0x36, 0x34, 0x2A, 0x26, 0x1E, 0x16,
             0x0E, 0x08, 0x00, 0xF6, 0xF4, 0xEE, 0xEC, 0xE2, 0xE0, 0xDA, 0xD2, 0xD0, 0xBE, 0xBC, 0xB2, 0xB0,
@@ -671,7 +671,7 @@
             0x0F, 0x17, 0x1F, 0x27, 0x2B, 0x35, 0x37, 0x3F, 0x49, 0x4F, 0x53, 0x51, 0x57, 0x5D, 0x63, 0x67
         };
 
-        public static readonly byte[] SpectrumA72Bits =
+        private static readonly byte[] SpectrumA72Bits =
         {
             6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7,
             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
@@ -683,7 +683,7 @@
             7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6
         };
 
-        public static readonly short[] SpectrumA72Codes =
+        private static readonly short[] SpectrumA72Codes =
         {
             0x2A, 0x24, 0x1C, 0x18, 0x12, 0x0E, 0x0A, 0x06, 0x02, 0x7E, 0x7C, 0x7A, 0x76, 0x72, 0x70, 0x6A,
             0x68, 0x62, 0x5C, 0x5A, 0x52, 0x4E, 0x46, 0x42, 0x3C, 0x34, 0x2A, 0x28, 0x20, 0x12, 0x10, 0x08,
@@ -695,7 +695,7 @@
             0x69, 0x6B, 0x71, 0x73, 0x77, 0x7B, 0x7D, 0x7F, 0x03, 0x07, 0x0B, 0x0F, 0x13, 0x19, 0x1D, 0x25
         };
 
-        public static readonly byte[] SpectrumA73Bits =
+        private static readonly byte[] SpectrumA73Bits =
         {
             5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
@@ -707,7 +707,7 @@
             7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
         };
 
-        public static readonly short[] SpectrumA73Codes =
+        private static readonly short[] SpectrumA73Codes =
         {
             0x003, 0x03E, 0x038, 0x034, 0x030, 0x02C, 0x028, 0x024, 0x020, 0x01C, 0x016, 0x014,
             0x00E, 0x00A, 0x004, 0x000, 0x07A, 0x076, 0x06E, 0x06C, 0x064, 0x05E, 0x056, 0x04E,
@@ -722,7 +722,7 @@
             0x021, 0x025, 0x029, 0x02D, 0x031, 0x035, 0x039, 0x03F
         };
 
-        public static readonly byte[] SpectrumA74Bits =
+        private static readonly byte[] SpectrumA74Bits =
         {
             05, 05, 05, 05, 06, 06, 06, 06, 06, 06, 06, 06, 06, 06, 06, 06,
             06, 07, 07, 07, 07, 07, 07, 07, 07, 07, 07, 07, 07, 07, 08, 08,
@@ -734,7 +734,7 @@
             06, 06, 06, 06, 06, 06, 06, 06, 06, 06, 06, 06, 06, 05, 05, 05
         };
 
-        public static readonly short[] SpectrumA74Codes =
+        private static readonly short[] SpectrumA74Codes =
         {
             0x00D, 0x00A, 0x004, 0x000, 0x03A, 0x036, 0x032, 0x030, 0x02C, 0x028, 0x026, 0x022,
             0x01E, 0x018, 0x012, 0x00E, 0x006, 0x07E, 0x07A, 0x070, 0x06A, 0x05E, 0x056, 0x054,
@@ -749,7 +749,7 @@
             0x02D, 0x031, 0x033, 0x037, 0x03B, 0x001, 0x005, 0x00B
         };
 
-        public static readonly byte[] SpectrumB22Bits =
+        private static readonly byte[] SpectrumB22Bits =
         {
             00, 04, 00, 04, 04, 05, 00, 05, 00, 00, 00, 00, 04, 05, 00, 05,
             04, 07, 00, 06, 06, 09, 00, 07, 00, 00, 00, 00, 06, 09, 00, 07,
@@ -769,7 +769,7 @@
             05, 09, 00, 10, 07, 10, 00, 10, 00, 00, 00, 00, 09, 10, 00, 10
         };
 
-        public static readonly short[] SpectrumB22Codes =
+        private static readonly short[] SpectrumB22Codes =
         {
             0x000, 0x00E, 0x000, 0x00F, 0x008, 0x006, 0x000, 0x00B, 0x000, 0x000, 0x000, 0x000,
             0x009, 0x00A, 0x000, 0x007, 0x006, 0x00A, 0x000, 0x029, 0x006, 0x158, 0x000, 0x023,
@@ -795,7 +795,7 @@
             0x043, 0x040, 0x000, 0x04B
         };
 
-        public static readonly byte[] SpectrumB23Bits =
+        private static readonly byte[] SpectrumB23Bits =
         {
             02, 04, 00, 04, 04, 06, 00, 06, 00, 00, 00, 00, 04, 06, 00, 06,
             04, 09, 00, 07, 07, 09, 00, 08, 00, 00, 00, 00, 07, 09, 00, 08,
@@ -815,7 +815,7 @@
             07, 10, 00, 10, 09, 10, 00, 10, 00, 00, 00, 00, 10, 10, 00, 10
         };
 
-        public static readonly short[] SpectrumB23Codes =
+        private static readonly short[] SpectrumB23Codes =
         {
             0x003, 0x008, 0x000, 0x009, 0x002, 0x018, 0x000, 0x01B, 0x000, 0x000, 0x000, 0x000,
             0x003, 0x01A, 0x000, 0x019, 0x000, 0x17C, 0x000, 0x055, 0x056, 0x0E8, 0x000, 0x07D,
@@ -841,7 +841,7 @@
             0x1EB, 0x1CE, 0x000, 0x1E3
         };
 
-        public static readonly byte[] SpectrumB24Bits =
+        private static readonly byte[] SpectrumB24Bits =
         {
             01, 04, 00, 04, 05, 07, 00, 07, 00, 00, 00, 00, 05, 07, 00, 07,
             05, 09, 00, 07, 08, 10, 00, 09, 00, 00, 00, 00, 07, 10, 00, 09,
@@ -861,7 +861,7 @@
             07, 10, 00, 10, 10, 10, 00, 10, 00, 00, 00, 00, 10, 10, 00, 10
         };
 
-        public static readonly short[] SpectrumB24Codes =
+        private static readonly short[] SpectrumB24Codes =
         {
             0x001, 0x000, 0x000, 0x001, 0x00A, 0x01C, 0x000, 0x033, 0x000, 0x000, 0x000, 0x000,
             0x00B, 0x032, 0x000, 0x01D, 0x008, 0x0D8, 0x000, 0x031, 0x06E, 0x0FA, 0x000, 0x0D7,
@@ -887,7 +887,7 @@
             0x0F3, 0x09A, 0x000, 0x0D7
         };
 
-        public static readonly byte[] SpectrumB32Bits =
+        private static readonly byte[] SpectrumB32Bits =
         {
             2, 4, 5, 6, 0, 6, 5, 4, 5, 6, 6, 7, 0, 6, 5, 6,
             5, 6, 7, 7, 0, 8, 7, 6, 6, 7, 8, 9, 0, 9, 8, 7,
@@ -895,7 +895,7 @@
             5, 6, 7, 8, 0, 7, 7, 6, 5, 6, 5, 6, 0, 7, 6, 6
         };
 
-        public static readonly short[] SpectrumB32Codes =
+        private static readonly short[] SpectrumB32Codes =
         {
             0x001, 0x002, 0x01E, 0x02A, 0x000, 0x02B, 0x01F, 0x003, 0x016, 0x020, 0x03A, 0x064,
             0x000, 0x005, 0x001, 0x023, 0x01A, 0x026, 0x070, 0x00C, 0x000, 0x0CF, 0x073, 0x031,
@@ -905,7 +905,7 @@
             0x000, 0x065, 0x03B, 0x021
         };
 
-        public static readonly byte[] SpectrumB33Bits =
+        private static readonly byte[] SpectrumB33Bits =
         {
             02, 04, 05, 07, 00, 07, 05, 04, 04, 05, 06, 08, 00, 07, 06, 05,
             05, 06, 07, 09, 00, 08, 07, 06, 07, 08, 09, 10, 00, 10, 09, 08,
@@ -913,7 +913,7 @@
             05, 06, 07, 08, 00, 09, 07, 06, 04, 05, 06, 07, 00, 08, 06, 05
         };
 
-        public static readonly short[] SpectrumB33Codes =
+        private static readonly short[] SpectrumB33Codes =
         {
             0x003, 0x008, 0x014, 0x05E, 0x000, 0x05F, 0x015, 0x009, 0x004, 0x002, 0x01C, 0x0BA,
             0x000, 0x011, 0x01F, 0x001, 0x00C, 0x00C, 0x014, 0x166, 0x000, 0x02D, 0x013, 0x00F,
@@ -923,7 +923,7 @@
             0x000, 0x0BB, 0x01D, 0x003
         };
 
-        public static readonly byte[] SpectrumB34Bits =
+        private static readonly byte[] SpectrumB34Bits =
         {
             01, 04, 06, 08, 00, 08, 06, 04, 04, 06, 07, 09, 00, 08, 07, 06,
             06, 07, 08, 10, 00, 10, 08, 07, 08, 09, 10, 10, 00, 10, 10, 09,
@@ -931,7 +931,7 @@
             06, 07, 08, 10, 00, 10, 08, 07, 04, 06, 07, 08, 00, 09, 07, 06
         };
 
-        public static readonly short[] SpectrumB34Codes =
+        private static readonly short[] SpectrumB34Codes =
         {
             0x000, 0x00A, 0x038, 0x0EE, 0x000, 0x0EF, 0x039, 0x00B, 0x008, 0x03C, 0x06E, 0x1D8,
             0x000, 0x0C1, 0x075, 0x03F, 0x032, 0x068, 0x0C4, 0x358, 0x000, 0x30F, 0x0C7, 0x06D,
@@ -941,7 +941,7 @@
             0x000, 0x1D9, 0x06F, 0x03D
         };
 
-        public static readonly byte[] SpectrumB42Bits =
+        private static readonly byte[] SpectrumB42Bits =
         {
             04, 05, 06, 08, 06, 07, 08, 08, 00, 08, 08, 07, 06, 08, 06, 05,
             05, 06, 07, 08, 07, 07, 08, 09, 00, 08, 08, 07, 07, 08, 07, 06,
@@ -961,7 +961,7 @@
             05, 06, 07, 08, 07, 07, 08, 08, 00, 09, 08, 07, 07, 08, 07, 06
         };
 
-        public static readonly short[] SpectrumB42Codes =
+        private static readonly short[] SpectrumB42Codes =
         {
             0x00E, 0x018, 0x010, 0x0F0, 0x024, 0x05A, 0x0F6, 0x078, 0x000, 0x079, 0x0F7, 0x05B,
             0x025, 0x0F1, 0x011, 0x019, 0x00C, 0x014, 0x01C, 0x036, 0x05C, 0x012, 0x09E, 0x1E4,
@@ -987,7 +987,7 @@
             0x05D, 0x037, 0x01D, 0x015
         };
 
-        public static readonly byte[] SpectrumB43Bits =
+        private static readonly byte[] SpectrumB43Bits =
         {
             02, 05, 06, 07, 07, 08, 08, 09, 00, 09, 08, 08, 07, 07, 06, 05,
             05, 06, 07, 08, 07, 08, 09, 10, 00, 10, 09, 08, 07, 08, 07, 06,
@@ -1007,7 +1007,7 @@
             05, 06, 07, 08, 07, 08, 09, 10, 00, 10, 09, 08, 07, 08, 07, 06
         };
 
-        public static readonly short[] SpectrumB43Codes =
+        private static readonly short[] SpectrumB43Codes =
         {
             0x001, 0x01E, 0x022, 0x018, 0x064, 0x0EC, 0x008, 0x100, 0x000, 0x101, 0x009, 0x0ED,
             0x065, 0x019, 0x023, 0x01F, 0x01A, 0x030, 0x056, 0x09A, 0x00A, 0x090, 0x12C, 0x0A6,
@@ -1033,7 +1033,7 @@
             0x00B, 0x09B, 0x057, 0x031
         };
 
-        public static readonly byte[] SpectrumB44Bits =
+        private static readonly byte[] SpectrumB44Bits =
         {
             02, 04, 06, 07, 07, 08, 10, 10, 00, 10, 10, 08, 07, 07, 06, 04,
             05, 05, 07, 08, 08, 10, 10, 10, 00, 10, 10, 10, 08, 08, 07, 05,
@@ -1053,7 +1053,7 @@
             05, 05, 07, 08, 08, 10, 10, 10, 00, 10, 10, 10, 08, 08, 07, 05
         };
 
-        public static readonly short[] SpectrumB44Codes =
+        private static readonly short[] SpectrumB44Codes =
         {
             0x002, 0x002, 0x030, 0x000, 0x002, 0x00C, 0x1D2, 0x1AE, 0x000, 0x1AF, 0x1D3, 0x00D,
             0x003, 0x001, 0x031, 0x003, 0x01E, 0x002, 0x070, 0x0C8, 0x07E, 0x1E8, 0x1C0, 0x176,
@@ -1079,44 +1079,44 @@
             0x07F, 0x0C9, 0x071, 0x003
         };
 
-        public static readonly byte[] SpectrumB52Bits =
+        private static readonly byte[] SpectrumB52Bits =
         {
             3, 4, 4, 4, 5, 5, 6, 6, 5, 5, 5, 6, 6, 6, 7, 7,
             0, 7, 7, 6, 6, 6, 5, 5, 5, 6, 6, 5, 5, 4, 4, 4
         };
 
-        public static readonly short[] SpectrumB52Codes =
+        private static readonly short[] SpectrumB52Codes =
         {
             0x06, 0x0E, 0x06, 0x00, 0x0A, 0x04, 0x2C, 0x12, 0x14, 0x10, 0x06, 0x2E, 0x24, 0x10, 0x4E, 0x4C,
             0x00, 0x4D, 0x4F, 0x11, 0x25, 0x2F, 0x07, 0x11, 0x15, 0x13, 0x2D, 0x05, 0x0B, 0x01, 0x07, 0x0F
         };
 
-        public static readonly byte[] SpectrumB53Bits =
+        private static readonly byte[] SpectrumB53Bits =
         {
             2, 3, 4, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 8, 8,
             0, 8, 8, 7, 7, 7, 6, 6, 6, 6, 6, 6, 5, 5, 4, 3
         };
 
-        public static readonly short[] SpectrumB53Codes =
+        private static readonly short[] SpectrumB53Codes =
         {
             0x02, 0x00, 0x06, 0x1C, 0x18, 0x3E, 0x16, 0x10, 0x3C, 0x36, 0x14, 0x6A, 0x26, 0x24, 0xD2, 0xD0,
             0x00, 0xD1, 0xD3, 0x25, 0x27, 0x6B, 0x15, 0x37, 0x3D, 0x11, 0x17, 0x3F, 0x19, 0x1D, 0x07, 0x01
         };
 
-        public static readonly byte[] SpectrumB54Bits =
+        private static readonly byte[] SpectrumB54Bits =
         {
             2, 3, 4, 4, 5, 6, 6, 7, 6, 6, 7, 8, 8, 8, 9, 9,
             0, 9, 9, 8, 8, 8, 7, 6, 6, 7, 6, 6, 5, 4, 4, 3
         };
 
-        public static readonly short[] SpectrumB54Codes =
+        private static readonly short[] SpectrumB54Codes =
         {
             0x003, 0x002, 0x008, 0x000, 0x014, 0x02E, 0x00E, 0x05A, 0x00A, 0x008, 0x01A, 0x0B2,
             0x032, 0x030, 0x162, 0x160, 0x000, 0x161, 0x163, 0x031, 0x033, 0x0B3, 0x01B, 0x009,
             0x00B, 0x05B, 0x00F, 0x02F, 0x015, 0x001, 0x009, 0x003
         };
 
-        public static readonly byte[] SpectrumB62Bits =
+        private static readonly byte[] SpectrumB62Bits =
         {
             4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7,
             6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8,
@@ -1124,7 +1124,7 @@
             6, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 4
         };
 
-        public static readonly short[] SpectrumB62Codes =
+        private static readonly short[] SpectrumB62Codes =
         {
             0x0D, 0x06, 0x1C, 0x14, 0x0A, 0x04, 0x3E, 0x2E, 0x22, 0x0E, 0x06, 0x00, 0x5A, 0x4E, 0x40, 0x20,
             0x30, 0x32, 0x24, 0x12, 0x0C, 0x02, 0x78, 0x58, 0x42, 0x22, 0x0A, 0x08, 0xF6, 0xF4, 0x9A, 0x98,
@@ -1132,7 +1132,7 @@
             0x31, 0x21, 0x41, 0x4F, 0x5B, 0x01, 0x07, 0x0F, 0x23, 0x2F, 0x3F, 0x05, 0x0B, 0x15, 0x1D, 0x07
         };
 
-        public static readonly byte[] SpectrumB63Bits =
+        private static readonly byte[] SpectrumB63Bits =
         {
             3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8,
             6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9,
@@ -1140,7 +1140,7 @@
             6, 8, 7, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4
         };
 
-        public static readonly short[] SpectrumB63Codes =
+        private static readonly short[] SpectrumB63Codes =
         {
             0x006, 0x00E, 0x004, 0x014, 0x010, 0x006, 0x000, 0x026, 0x01C, 0x018, 0x004, 0x05C,
             0x04A, 0x03C, 0x016, 0x0BC, 0x006, 0x008, 0x058, 0x03E, 0x036, 0x014, 0x0B6, 0x0B4,
@@ -1150,7 +1150,7 @@
             0x011, 0x015, 0x005, 0x00F
         };
 
-        public static readonly byte[] SpectrumB64Bits =
+        private static readonly byte[] SpectrumB64Bits =
         {
             03, 03, 04, 05, 05, 05, 06, 06, 06, 06, 07, 07, 07, 07, 07, 08,
             07, 07, 07, 08, 08, 08, 09, 09, 09, 09, 09, 09, 10, 10, 10, 10,
@@ -1158,7 +1158,7 @@
             07, 08, 07, 07, 07, 07, 07, 06, 06, 06, 06, 05, 05, 05, 04, 03
         };
 
-        public static readonly short[] SpectrumB64Codes =
+        private static readonly short[] SpectrumB64Codes =
         {
             0x007, 0x000, 0x008, 0x01A, 0x014, 0x00C, 0x032, 0x02E, 0x01E, 0x014, 0x062, 0x05A,
             0x03A, 0x026, 0x020, 0x0B2, 0x038, 0x02C, 0x022, 0x0C0, 0x05E, 0x04A, 0x186, 0x184,
@@ -1168,7 +1168,7 @@
             0x015, 0x01B, 0x009, 0x001
         };
 
-        public static readonly byte[] SpectrumB72Bits =
+        private static readonly byte[] SpectrumB72Bits =
         {
             5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7,
             7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
@@ -1180,7 +1180,7 @@
             7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5
         };
 
-        public static readonly short[] SpectrumB72Codes =
+        private static readonly short[] SpectrumB72Codes =
         {
             0x01E, 0x016, 0x00C, 0x000, 0x038, 0x032, 0x028, 0x022, 0x01C, 0x012, 0x00E, 0x006,
             0x076, 0x06C, 0x060, 0x04E, 0x03E, 0x02A, 0x022, 0x01A, 0x012, 0x00A, 0x0FC, 0x0DC,
@@ -1195,7 +1195,7 @@
             0x01D, 0x023, 0x029, 0x033, 0x039, 0x001, 0x00D, 0x017
         };
 
-        public static readonly byte[] SpectrumB73Bits =
+        private static readonly byte[] SpectrumB73Bits =
         {
             03, 04, 05, 05, 05, 06, 06, 06, 06, 06, 06, 07, 07, 07, 07, 07,
             07, 07, 07, 07, 08, 08, 08, 08, 08, 08, 08, 08, 08, 08, 09, 09,
@@ -1207,7 +1207,7 @@
             07, 07, 07, 07, 07, 07, 06, 06, 06, 06, 06, 06, 05, 05, 05, 04
         };
 
-        public static readonly short[] SpectrumB73Codes =
+        private static readonly short[] SpectrumB73Codes =
         {
             0x000, 0x006, 0x018, 0x010, 0x004, 0x03A, 0x034, 0x02A, 0x026, 0x014, 0x010, 0x07E,
             0x072, 0x06E, 0x05C, 0x052, 0x04A, 0x02C, 0x024, 0x018, 0x0F4, 0x0E0, 0x0DA, 0x0B6,
@@ -1222,7 +1222,7 @@
             0x027, 0x02B, 0x035, 0x03B, 0x005, 0x011, 0x019, 0x007
         };
 
-        public static readonly byte[] SpectrumB74Bits =
+        private static readonly byte[] SpectrumB74Bits =
         {
             03, 04, 05, 05, 05, 05, 06, 06, 06, 06, 06, 06, 07, 07, 07, 07,
             07, 07, 07, 07, 08, 08, 08, 08, 08, 08, 08, 08, 08, 09, 09, 09,
@@ -1234,7 +1234,7 @@
             07, 07, 07, 07, 07, 06, 06, 06, 06, 06, 06, 05, 05, 05, 05, 04
         };
 
-        public static readonly short[] SpectrumB74Codes =
+        private static readonly short[] SpectrumB74Codes =
         {
             0x001, 0x008, 0x01E, 0x018, 0x00C, 0x002, 0x03A, 0x034, 0x02C, 0x01E, 0x016, 0x012,
             0x072, 0x06E, 0x05E, 0x056, 0x050, 0x038, 0x022, 0x004, 0x0E2, 0x0DA, 0x0BA, 0x0A8,
@@ -1247,6 +1247,106 @@
             0x0A5, 0x157, 0x1B1, 0x1C1, 0x001, 0x003, 0x051, 0x055, 0x077, 0x0A9, 0x0BB, 0x0DB,
             0x0E3, 0x005, 0x023, 0x039, 0x051, 0x057, 0x05F, 0x06F, 0x073, 0x013, 0x017, 0x01F,
             0x02D, 0x035, 0x03B, 0x003, 0x00D, 0x019, 0x01F, 0x009
+        };
+
+        public static readonly byte[][] HuffmanScaleFactorsABits =
+        {
+            null,
+            ScaleFactorsA1Bits, ScaleFactorsA2Bits, ScaleFactorsA3Bits,
+            ScaleFactorsA4Bits, ScaleFactorsA5Bits, ScaleFactorsA6Bits
+        };
+
+        public static readonly short[][] HuffmanScaleFactorsACodes =
+        {
+            null,
+            ScaleFactorsA1Codes, ScaleFactorsA2Codes, ScaleFactorsA3Codes,
+            ScaleFactorsA4Codes, ScaleFactorsA5Codes, ScaleFactorsA6Codes
+        };
+
+        public static readonly byte[][] HuffmanScaleFactorsBBits =
+        {
+            null, null,
+            ScaleFactorsB2Bits, ScaleFactorsB3Bits, ScaleFactorsB4Bits, ScaleFactorsB5Bits
+        };
+
+        public static readonly short[][] HuffmanScaleFactorsBCodes =
+        {
+            null, null,
+            ScaleFactorsB2Codes, ScaleFactorsB3Codes, ScaleFactorsB4Codes, ScaleFactorsB5Codes
+        };
+
+        public static readonly byte[] HuffmanScaleFactorsGroupSizes = { 0, 0, 0, 0, 0, 0, 0 };
+
+        public static readonly byte[][][] HuffmanSpectrumABits =
+        {
+            null,
+            null,
+            new[] {SpectrumA21Bits, SpectrumA22Bits, SpectrumA23Bits, SpectrumA24Bits},
+            new[] {SpectrumA31Bits, SpectrumA32Bits, SpectrumA33Bits, SpectrumA34Bits},
+            new[] {SpectrumA41Bits, SpectrumA42Bits, SpectrumA43Bits, SpectrumA44Bits},
+            new[] {SpectrumA51Bits, SpectrumA52Bits, SpectrumA53Bits, SpectrumA54Bits},
+            new[] {SpectrumA61Bits, SpectrumA62Bits, SpectrumA63Bits, SpectrumA64Bits},
+            new[] {SpectrumA71Bits, SpectrumA72Bits, SpectrumA73Bits, SpectrumA74Bits}
+        };
+
+        public static readonly short[][][] HuffmanSpectrumACodes =
+        {
+            null,
+            null,
+            new[] {SpectrumA21Codes, SpectrumA22Codes, SpectrumA23Codes, SpectrumA24Codes},
+            new[] {SpectrumA31Codes, SpectrumA32Codes, SpectrumA33Codes, SpectrumA34Codes},
+            new[] {SpectrumA41Codes, SpectrumA42Codes, SpectrumA43Codes, SpectrumA44Codes},
+            new[] {SpectrumA51Codes, SpectrumA52Codes, SpectrumA53Codes, SpectrumA54Codes},
+            new[] {SpectrumA61Codes, SpectrumA62Codes, SpectrumA63Codes, SpectrumA64Codes},
+            new[] {SpectrumA71Codes, SpectrumA72Codes, SpectrumA73Codes, SpectrumA74Codes}
+        };
+
+        public static readonly byte[][] HuffmanSpectrumAGroupSizes =
+        {
+            new byte[] {0, 0, 0, 0},
+            new byte[] {0, 0, 0, 0},
+            new byte[] {1, 2, 2, 2},
+            new byte[] {1, 1, 1, 1},
+            new byte[] {1, 1, 1, 1},
+            new byte[] {0, 0, 0, 0},
+            new byte[] {0, 0, 0, 0},
+            new byte[] {0, 0, 0, 0}
+        };
+
+        public static readonly byte[][][] HuffmanSpectrumBBits =
+        {
+            null,
+            null,
+            new[] {null, SpectrumB22Bits, SpectrumB23Bits, SpectrumB24Bits},
+            new[] {null, SpectrumB32Bits, SpectrumB33Bits, SpectrumB34Bits},
+            new[] {null, SpectrumB42Bits, SpectrumB43Bits, SpectrumB44Bits},
+            new[] {null, SpectrumB52Bits, SpectrumB53Bits, SpectrumB54Bits},
+            new[] {null, SpectrumB62Bits, SpectrumB63Bits, SpectrumB64Bits},
+            new[] {null, SpectrumB72Bits, SpectrumB73Bits, SpectrumB74Bits}
+        };
+
+        public static readonly short[][][] HuffmanSpectrumBCodes =
+        {
+            null,
+            null,
+            new[] {null, SpectrumB22Codes, SpectrumB23Codes, SpectrumB24Codes},
+            new[] {null, SpectrumB32Codes, SpectrumB33Codes, SpectrumB34Codes},
+            new[] {null, SpectrumB42Codes, SpectrumB43Codes, SpectrumB44Codes},
+            new[] {null, SpectrumB52Codes, SpectrumB53Codes, SpectrumB54Codes},
+            new[] {null, SpectrumB62Codes, SpectrumB63Codes, SpectrumB64Codes},
+            new[] {null, SpectrumB72Codes, SpectrumB73Codes, SpectrumB74Codes}
+        };
+
+        public static readonly byte[][] HuffmanSpectrumBGroupSizes =
+        {
+            new byte[] {0, 0, 0, 0},
+            new byte[] {0, 0, 0, 0},
+            new byte[] {0, 2, 2, 2},
+            new byte[] {0, 1, 1, 1},
+            new byte[] {0, 1, 1, 1},
+            new byte[] {0, 0, 0, 0},
+            new byte[] {0, 0, 0, 0},
+            new byte[] {0, 0, 0, 0}
         };
     }
 }

@@ -78,7 +78,7 @@ namespace LibAtrac9
         private static void ReadVlcDeltaOffset(BitReader reader, Channel channel)
         {
             int weightIndex = reader.ReadInt(3);
-            byte[] weights = Tables.ScaleFactorWeights[weightIndex];
+            byte[] weights = ScaleFactorWeights[weightIndex];
 
             int[] sf = channel.ScaleFactors;
             int baseValue = reader.ReadInt(5);
@@ -144,5 +144,28 @@ namespace LibAtrac9
                 sf[i] = reader.ReadInt(5);
             }
         }
+
+        public static readonly byte[][] ScaleFactorWeights =
+        {
+            new byte[] {
+                0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 10, 12, 12, 12
+            }, new byte[] {
+                3, 2, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 2, 3, 3, 4, 5, 7, 10, 10, 10
+            }, new byte[] {
+                0, 2, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 8, 9, 12, 12, 12
+            }, new byte[] {
+                0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 8, 8, 10, 11, 11, 12, 13, 13, 13, 13
+            }, new byte[] {
+                0, 2, 2, 3, 3, 4, 4, 5, 4, 5, 5, 5, 5, 6, 7, 8, 8, 8, 8, 9, 9, 9, 10, 10, 11, 12, 12, 13, 13, 14, 14, 14
+            }, new byte[] {
+                1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 11, 11, 11
+            }, new byte[] {
+                0, 5, 8, 10, 11, 11, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 12, 12,
+                12, 13, 15, 15, 15
+            }, new byte[] {
+                0, 2, 3, 4, 5, 6, 6, 7, 7, 8, 8, 8, 9, 9, 10, 10, 10, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13,
+                15, 15, 15
+            }
+        };
     }
 }
