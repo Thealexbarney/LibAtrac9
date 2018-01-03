@@ -42,6 +42,7 @@ typedef struct {
 } ConfigData;
 
 typedef struct {
+	int initialized;
 	unsigned short stateA;
 	unsigned short stateB;
 	unsigned short stateC;
@@ -140,3 +141,20 @@ typedef struct {
 	ConfigData config;
 	frame frame;
 } atrac9_handle;
+
+typedef struct {
+	int group_b_unit;
+	int group_c_unit;
+	int band_count;
+} bex_group;
+
+typedef struct {
+	int channels;
+	int channelConfigIndex;
+	int samplingRate;
+	int superframeSize;
+	int framesInSuperframe;
+	int frameSamples;
+	int wlength;
+	unsigned char configData[CONFIG_DATA_SIZE];
+} CodecInfo;

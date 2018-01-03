@@ -18,3 +18,6 @@ at9_status ReadSpectra(channel* channel, bit_reader_cxt* br);
 at9_status ReadSpectraFine(channel* channel, bit_reader_cxt* br);
 
 at9_status UnpackLfeBlock(block* block, bit_reader_cxt* br);
+void DecodeLfeScaleFactors(channel* channel, bit_reader_cxt* br);
+void CalculateLfePrecision(channel* channel);
+void ReadLfeSpectra(channel* channel, bit_reader_cxt* br);

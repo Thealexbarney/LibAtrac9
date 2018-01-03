@@ -1,3 +1,4 @@
+#include <string.h>
 #include "decoder.h"
 #include "unpack.h"
 #include "quantization.h"
@@ -5,6 +6,7 @@
 #include "imdct.h"
 #include <math.h>
 #include "utility.h"
+#include "band_extension.h"
 
 at9_status Decode(atrac9_handle* handle, const unsigned char* audio, unsigned char* pcm, int* bytesUsed)
 {
@@ -15,8 +17,8 @@ at9_status Decode(atrac9_handle* handle, const unsigned char* audio, unsigned ch
 
 	PcmFloatToShort(&handle->frame, (short*)pcm);
 
-
-	*bytesUsed = br.position / 8;
+	
+		*bytesUsed = br.position / 8;
 	return ERR_SUCCESS;
 }
 
@@ -31,6 +33,7 @@ at9_status DecodeFrame(frame* frame, bit_reader_cxt* br)
 		DequantizeSpectra(block);
 		ApplyIntensityStereo(block);
 		ScaleSpectrumBlock(block);
+		ApplyBandExtension(block);
 		ImdctBlock(block);
 	}
 
@@ -96,4 +99,17 @@ void ApplyIntensityStereo(block* block)
 			}
 		}
 	}
+}
+
+int GetCodecInfo(atrac9_handle* handle, CodecInfo * pCodecInfo)
+{
+	pCodecInfo->channels = handle->config.ChannelCount;
+	pCodecInfo->channelConfigIndex = handle->config.ChannelConfigIndex;
+	pCodecInfo->samplingRate = handle->config.SampleRate;
+	pCodecInfo->superframeSize = handle->config.SuperframeBytes;
+	pCodecInfo->framesInSuperframe = handle->config.FramesPerSuperframe;
+	pCodecInfo->frameSamples = handle->config.FrameSamples;
+	pCodecInfo->wlength = handle->wlength;
+	memcpy(pCodecInfo->configData, handle->config.ConfigData, CONFIG_DATA_SIZE);
+	return ERR_SUCCESS;
 }

@@ -5,47 +5,29 @@
 #include "decinit.h"
 #include "decoder.h"
 
-HANDLE_ATRAC9 GetHandle()
+void* Atrac9GetHandle()
 {
 	struct atrac9_handle* handle = malloc(sizeof(atrac9_handle));
 	memset(handle, 0, sizeof(atrac9_handle));
 	return handle;
 }
 
-void ReleaseHandle(HANDLE_ATRAC9 handle)
+void Atrac9ReleaseHandle(void* handle)
 {
 	free(handle);
 }
 
-int DecInit(HANDLE_ATRAC9 handle, unsigned char * pConfigData, int wlength)
+int Atrac9InitDecoder(void* handle, unsigned char * pConfigData)
 {
-	if (wlength != 16)
-	{
-		return -1;
-	}
-
-	ERROR_CHECK(init_decoder(handle, pConfigData, wlength));
-
-	return 0;
+	return init_decoder(handle, pConfigData, 16);
 }
 
-int DecDecode(HANDLE_ATRAC9 handle, const unsigned char * pStreamBuffer, int * pNByteUsed, void * pPcmBuffer)
+int Atrac9Decode(void* handle, const unsigned char *pAtrac9Buffer, short *pPcmBuffer, int *pNBytesUsed)
 {
-	at9_status status = Decode(handle, pStreamBuffer, pPcmBuffer, pNByteUsed);
-	return status;
+	return Decode(handle, pAtrac9Buffer, (unsigned char*)pPcmBuffer, pNBytesUsed);
 }
 
-int GetCodecInfo(HANDLE_ATRAC9 handle, CodecInfo * pCodecInfo)
+int Atrac9GetCodecInfo(void* handle, Atrac9CodecInfo * pCodecInfo)
 {
-	atrac9_handle* h = handle;
-
-	pCodecInfo->channels = h->config.ChannelCount;
-	pCodecInfo->channelConfigIndex = h->config.ChannelConfigIndex;
-	pCodecInfo->samplingRate = h->config.SampleRate;
-	pCodecInfo->superframeSize = h->config.SuperframeBytes;
-	pCodecInfo->framesInSuperframe = h->config.FramesPerSuperframe;
-	pCodecInfo->frameSamples = h->config.FrameSamples;
-	pCodecInfo->wlength = h->wlength;
-	memcpy(pCodecInfo->configData, h->config.ConfigData, CONFIG_DATA_SIZE);
-	return ERR_SUCCESS;
+	return GetCodecInfo(handle, (CodecInfo*)pCodecInfo);
 }

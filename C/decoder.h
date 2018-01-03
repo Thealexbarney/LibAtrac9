@@ -8,3 +8,4 @@ at9_status DecodeFrame(frame* frame, bit_reader_cxt* br);
 void ImdctBlock(block* block);
 void ApplyIntensityStereo(block* block);
 void PcmFloatToShort(frame* frame, short* pcmOut);
+int GetCodecInfo(atrac9_handle* handle, CodecInfo* pCodecInfo);

@@ -125,6 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="band_extension.h" />
     <ClInclude Include="bit_allocation.h" />
     <ClInclude Include="bit_reader.h" />
     <ClInclude Include="decinit.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="band_extension.c" />
     <ClCompile Include="bit_allocation.c" />
     <ClCompile Include="bit_reader.c" />
     <ClCompile Include="decinit.c" />

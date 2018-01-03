@@ -9,7 +9,7 @@ extern "C" {
 #define DLLEXPORT __declspec(dllimport)  
 #endif
 
-typedef void* HANDLE_ATRAC9;
+#define ATRAC9_CONFIG_DATA_SIZE 4
 
 typedef struct {
 	int channels;
@@ -19,15 +19,16 @@ typedef struct {
 	int framesInSuperframe;
 	int frameSamples;
 	int wlength;
-	unsigned char configData[4];
-} CodecInfo;
+	unsigned char configData[ATRAC9_CONFIG_DATA_SIZE];
+} Atrac9CodecInfo;
 
-DLLEXPORT HANDLE_ATRAC9 GetHandle(void);
-DLLEXPORT void ReleaseHandle(HANDLE_ATRAC9 handle);
+DLLEXPORT void* Atrac9GetHandle(void);
+DLLEXPORT void Atrac9ReleaseHandle(void* handle);
 
-DLLEXPORT int DecInit(HANDLE_ATRAC9 handle, unsigned char *pConfigData, int wlength);
-DLLEXPORT int DecDecode(HANDLE_ATRAC9 handle, const unsigned char *pStreamBuffer, int *pNByteUsed, void *pPcmBuffer);
-DLLEXPORT int GetCodecInfo(HANDLE_ATRAC9 handle, CodecInfo *pCodecInfo);
+DLLEXPORT int Atrac9InitDecoder(void* handle, unsigned char *pConfigData);
+DLLEXPORT int Atrac9Decode(void* handle, const unsigned char *pAtrac9Buffer, short *pPcmBuffer, int *pNBytesUsed);
+
+DLLEXPORT int Atrac9GetCodecInfo(void* handle, Atrac9CodecInfo *pCodecInfo);
 
 #ifdef __cplusplus
 }

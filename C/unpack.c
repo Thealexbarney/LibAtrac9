@@ -192,17 +192,68 @@ at9_status ReadStereoParams(block* block, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
+void BexReadHeader(channel* channel, bit_reader_cxt* br, int bexBand)
+{
+	const int bexMode = read_int(br, 2);
+	channel->BexMode = bexBand > 2 ? bexMode : 4;
+	channel->BexValueCount = BexEncodedValueCounts[channel->BexMode][bexBand];
+}
+
+void BexReadData(channel* channel, bit_reader_cxt* br, int bexBand)
+{
+	for (int i = 0; i < channel->BexValueCount; i++)
+	{
+		const int dataLength = BexDataLengths[channel->BexMode][bexBand][i];
+		channel->BexValues[i] = read_int(br, dataLength);
+	}
+}
+
 at9_status ReadExtensionParams(block* block, bit_reader_cxt* br)
 {
+	int bexBand = 0;
 	if (block->BandExtensionEnabled)
 	{
-		return ERR_NOT_IMPLEMENTED;
+		bexBand = BexGroupInfo[block->QuantizationUnitCount - 13].band_count;
+		if (block->BlockType == Stereo)
+		{
+			BexReadHeader(&block->Channels[1], br, bexBand);
+		}
+		else
+		{
+			br->position += 1;
+		}
 	}
 	block->HasExtensionData = read_int(br, 1);
 
 	if (!block->HasExtensionData) return ERR_SUCCESS;
+	if (!block->BandExtensionEnabled)
+	{
+		block->BexMode = read_int(br, 2);
+		block->BexDataLength = read_int(br, 5);
+		br->position += block->BexDataLength;
+		return ERR_SUCCESS;
+	}
 
-	return ERR_NOT_IMPLEMENTED;
+	BexReadHeader(&block->Channels[0], br, bexBand);
+
+	block->BexDataLength = read_int(br, 5);
+	if (block->BexDataLength <= 0) return ERR_SUCCESS;
+	const int bexDataEnd = br->position + block->BexDataLength;
+
+	BexReadData(&block->Channels[0], br, bexBand);
+
+	if (block->BlockType == Stereo)
+	{
+		BexReadData(&block->Channels[1], br, bexBand);
+	}
+
+	// Make sure we didn't read too many bits
+	if (br->position > bexDataEnd)
+	{
+		return ERR_UNPACK_EXTENSION_DATA_INVALID;
+	}
+
+	return ERR_SUCCESS;
 }
 
 void UpdateCodedUnits(channel* channel)
@@ -324,5 +375,49 @@ at9_status ReadSpectraFine(channel* channel, bit_reader_cxt* br)
 
 at9_status UnpackLfeBlock(block* block, bit_reader_cxt* br)
 {
-	return ERR_NOT_IMPLEMENTED;
+	channel* channel = &block->Channels[0];
+	block->QuantizationUnitCount = 2;
+
+	DecodeLfeScaleFactors(channel, br);
+	CalculateLfePrecision(channel);
+	channel->CodedQuantUnits = block->QuantizationUnitCount;
+	ReadLfeSpectra(channel, br);
+
+	return ERR_SUCCESS;
+}
+
+void DecodeLfeScaleFactors(channel* channel, bit_reader_cxt* br)
+{
+	memset(channel->ScaleFactors, 0, sizeof(channel->ScaleFactors));
+	for (int i = 0; i < channel->Block->QuantizationUnitCount; i++)
+	{
+		channel->ScaleFactors[i] = read_int(br, 5);
+	}
+}
+
+void CalculateLfePrecision(channel* channel)
+{
+	block* block = channel->Block;
+	const int precision = block->ReuseBandParams ? 8 : 4;
+	for (int i = 0; i < block->QuantizationUnitCount; i++)
+	{
+		channel->Precisions[i] = precision;
+		channel->PrecisionsFine[i] = 0;
+	}
+}
+
+void ReadLfeSpectra(channel* channel, bit_reader_cxt* br)
+{
+	memset(channel->QuantizedSpectra, 0, sizeof(channel->QuantizedSpectra));
+
+	for (int i = 0; i < channel->CodedQuantUnits; i++)
+	{
+		if (channel->Precisions[i] <= 0) continue;
+
+		const int precision = channel->Precisions[i] + 1;
+		for (int j = QuantUnitToCoeffIndex[i]; j < QuantUnitToCoeffIndex[i + 1]; j++)
+		{
+			channel->QuantizedSpectra[j] = read_signed_int(br, precision);
+		}
+	}
 }
