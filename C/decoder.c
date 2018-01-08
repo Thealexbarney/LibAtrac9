@@ -17,8 +17,7 @@ at9_status Decode(atrac9_handle* handle, const unsigned char* audio, unsigned ch
 
 	PcmFloatToShort(&handle->frame, (short*)pcm);
 
-	
-		*bytesUsed = br.position / 8;
+	*bytesUsed = br.position / 8;
 	return ERR_SUCCESS;
 }
 

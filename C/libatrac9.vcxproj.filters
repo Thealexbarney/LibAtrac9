@@ -98,5 +98,8 @@
     <ClCompile Include="band_extension.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tables.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,6 +4,8 @@
 #include "structures.h"
 #include "tables.h"
 #include <string.h>
+#include <math.h>
+#include "utility.h"
 
 static int BlockTypeToChannelCount(BlockType block_type);
 
@@ -11,6 +13,8 @@ at9_status init_decoder(atrac9_handle* handle, unsigned char* config_data, int w
 {
 	ERROR_CHECK(init_config_data(&handle->config, config_data));
 	ERROR_CHECK(init_frame(handle));
+	init_mdct_tables(handle->config.FrameSamplesPower);
+	init_huffman_codebooks();
 	handle->wlength = wlength;
 	handle->initialized = 1;
 	return ERR_SUCCESS;
@@ -92,6 +96,80 @@ at9_status init_channel(channel* channel, block* parent_block, int channel_index
 	channel->ChannelIndex = channel_index;
 	channel->mdct.bits = parent_block->config->FrameSamplesPower;
 	return ERR_SUCCESS;
+}
+
+void init_huffman_codebooks()
+{
+	init_huffman_set(HuffmanScaleFactorsUnsigned, sizeof(HuffmanScaleFactorsUnsigned) / sizeof(HuffmanCodebook));
+	init_huffman_set(HuffmanScaleFactorsSigned, sizeof(HuffmanScaleFactorsSigned) / sizeof(HuffmanCodebook));
+	init_huffman_set(HuffmanSpectrum, sizeof(HuffmanSpectrum) / sizeof(HuffmanCodebook));
+}
+
+void init_huffman_set(const HuffmanCodebook* codebooks, int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		InitHuffmanCodebook(&codebooks[i]);
+	}
+}
+
+void init_mdct_tables(int frameSizePower)
+{
+	for (int i = 0; i < 9; i++)
+	{
+		GenerateTrigTables(i);
+		GenerateShuffleTable(i);
+	}
+	GenerateMdctWindow(frameSizePower);
+	GenerateImdctWindow(frameSizePower);
+}
+
+void GenerateTrigTables(int sizeBits)
+{
+	const int size = 1 << sizeBits;
+	double* sinTab = SinTables[sizeBits];
+	double* cosTab = CosTables[sizeBits];
+
+	for (int i = 0; i < size; i++)
+	{
+		const double value = M_PI * (4 * i + 1) / (4 * size);
+		sinTab[i] = sin(value);
+		cosTab[i] = cos(value);
+	}
+}
+
+void GenerateShuffleTable(int sizeBits)
+{
+	const int size = 1 << sizeBits;
+	int* table = ShuffleTables[sizeBits];
+
+	for (int i = 0; i < size; i++)
+	{
+		table[i] = BitReverse32(i ^ (i / 2), sizeBits);
+	}
+}
+
+void GenerateMdctWindow(int frameSizePower)
+{
+	const int frameSize = 1 << frameSizePower;
+	double* mdct = MdctWindow[frameSizePower - 6];
+
+	for (int i = 0; i < frameSize; i++)
+	{
+		mdct[i] = (sin(((i + 0.5) / frameSize - 0.5) * M_PI) + 1.0) * 0.5;
+	}
+}
+
+void GenerateImdctWindow(int frameSizePower)
+{
+	const int frameSize = 1 << frameSizePower;
+	double* imdct = ImdctWindow[frameSizePower - 6];
+	double* mdct = MdctWindow[frameSizePower - 6];
+
+	for (int i = 0; i < frameSize; i++)
+	{
+		imdct[i] = mdct[i] / (mdct[frameSize - 1 - i] * mdct[frameSize - 1 - i] + mdct[i] * mdct[i]);
+	}
 }
 
 static int BlockTypeToChannelCount(BlockType block_type)

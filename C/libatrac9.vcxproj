@@ -152,6 +152,7 @@
     <ClCompile Include="libatrac9.c" />
     <ClCompile Include="quantization.c" />
     <ClCompile Include="scale_factors.c" />
+    <ClCompile Include="tables.c" />
     <ClCompile Include="unpack.c" />
     <ClCompile Include="utility.c" />
   </ItemGroup>
