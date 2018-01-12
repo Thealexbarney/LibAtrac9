@@ -125,36 +125,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="band_extension.h" />
-    <ClInclude Include="bit_allocation.h" />
-    <ClInclude Include="bit_reader.h" />
-    <ClInclude Include="decinit.h" />
-    <ClInclude Include="decoder.h" />
-    <ClInclude Include="error_codes.h" />
-    <ClInclude Include="huffCodes.h" />
-    <ClInclude Include="imdct.h" />
-    <ClInclude Include="libatrac9.h" />
-    <ClInclude Include="quantization.h" />
-    <ClInclude Include="scale_factors.h" />
-    <ClInclude Include="structures.h" />
-    <ClInclude Include="tables.h" />
-    <ClInclude Include="unpack.h" />
-    <ClInclude Include="utility.h" />
+    <ClInclude Include="src\band_extension.h" />
+    <ClInclude Include="src\bit_allocation.h" />
+    <ClInclude Include="src\bit_reader.h" />
+    <ClInclude Include="src\decinit.h" />
+    <ClInclude Include="src\decoder.h" />
+    <ClInclude Include="src\error_codes.h" />
+    <ClInclude Include="src\huffCodes.h" />
+    <ClInclude Include="src\imdct.h" />
+    <ClInclude Include="src\libatrac9.h" />
+    <ClInclude Include="src\quantization.h" />
+    <ClInclude Include="src\scale_factors.h" />
+    <ClInclude Include="src\structures.h" />
+    <ClInclude Include="src\tables.h" />
+    <ClInclude Include="src\unpack.h" />
+    <ClInclude Include="src\utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="band_extension.c" />
-    <ClCompile Include="bit_allocation.c" />
-    <ClCompile Include="bit_reader.c" />
-    <ClCompile Include="decinit.c" />
-    <ClCompile Include="decoder.c" />
-    <ClCompile Include="huffCodes.c" />
-    <ClCompile Include="imdct.c" />
-    <ClCompile Include="libatrac9.c" />
-    <ClCompile Include="quantization.c" />
-    <ClCompile Include="scale_factors.c" />
-    <ClCompile Include="tables.c" />
-    <ClCompile Include="unpack.c" />
-    <ClCompile Include="utility.c" />
+    <ClCompile Include="src\band_extension.c" />
+    <ClCompile Include="src\bit_allocation.c" />
+    <ClCompile Include="src\bit_reader.c" />
+    <ClCompile Include="src\decinit.c" />
+    <ClCompile Include="src\decoder.c" />
+    <ClCompile Include="src\huffCodes.c" />
+    <ClCompile Include="src\imdct.c" />
+    <ClCompile Include="src\libatrac9.c" />
+    <ClCompile Include="src\quantization.c" />
+    <ClCompile Include="src\scale_factors.c" />
+    <ClCompile Include="src\tables.c" />
+    <ClCompile Include="src\unpack.c" />
+    <ClCompile Include="src\utility.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
