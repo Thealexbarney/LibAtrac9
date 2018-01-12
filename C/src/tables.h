@@ -4,12 +4,12 @@
 
 static const ChannelConfig ChannelConfigs[6] =
 {
-	{1, 1, Mono},
-	{2, 2, Mono, Mono},
-	{1, 2, Stereo},
-	{4, 6, Stereo, Mono, LFE, Stereo},
-	{5, 8, Stereo, Mono, LFE, Stereo, Stereo},
-	{2, 4, Stereo, Stereo},
+	{1, 1, {Mono}},
+	{2, 2, {Mono, Mono}},
+	{1, 2, {Stereo}},
+	{4, 6, {Stereo, Mono, LFE, Stereo}},
+	{5, 8, {Stereo, Mono, LFE, Stereo, Stereo}},
+	{2, 4, {Stereo, Stereo}},
 };
 
 static const int MaxHuffPrecision[2] = { 7, 1 };

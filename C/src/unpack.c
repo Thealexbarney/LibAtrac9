@@ -36,7 +36,6 @@ at9_status UnpackBlock(block* block, bit_reader_cxt* br)
 
 at9_status ReadBlockHeader(block* block, bit_reader_cxt* br)
 {
-	int firstInSuperframe = block->Frame->FrameIndex == 0;
 	block->FirstInSuperframe = !read_int(br, 1);
 	block->ReuseBandParams = read_int(br, 1);
 

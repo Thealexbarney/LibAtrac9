@@ -2,7 +2,6 @@
 
 #define FALSE 0
 #define TRUE 1
-#define NULL 0
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846

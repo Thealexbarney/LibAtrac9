@@ -102,7 +102,7 @@ void init_huffman_codebooks()
 {
 	init_huffman_set(HuffmanScaleFactorsUnsigned, sizeof(HuffmanScaleFactorsUnsigned) / sizeof(HuffmanCodebook));
 	init_huffman_set(HuffmanScaleFactorsSigned, sizeof(HuffmanScaleFactorsSigned) / sizeof(HuffmanCodebook));
-	init_huffman_set(HuffmanSpectrum, sizeof(HuffmanSpectrum) / sizeof(HuffmanCodebook));
+	init_huffman_set((HuffmanCodebook*)HuffmanSpectrum, sizeof(HuffmanSpectrum) / sizeof(HuffmanCodebook));
 }
 
 void init_huffman_set(const HuffmanCodebook* codebooks, int count)
