@@ -1,39 +1,39 @@
-#include <string.h>
 #include "decoder.h"
-#include "unpack.h"
-#include "quantization.h"
-#include "tables.h"
-#include "imdct.h"
-#include <math.h>
-#include "utility.h"
 #include "band_extension.h"
 #include "bit_reader.h"
+#include "imdct.h"
+#include "quantization.h"
+#include "tables.h"
+#include "unpack.h"
+#include "utility.h"
+#include <math.h>
+#include <string.h>
 
-static at9_status DecodeFrame(frame* frame, bit_reader_cxt* br);
-static void ImdctBlock(block* block);
-static void ApplyIntensityStereo(block* block);
-static void PcmFloatToShort(frame* frame, short* pcmOut);
+static At9Status DecodeFrame(Frame* frame, BitReaderCxt* br);
+static void ImdctBlock(Block* block);
+static void ApplyIntensityStereo(Block* block);
+static void PcmFloatToShort(Frame* frame, short* pcmOut);
 
-at9_status Decode(atrac9_handle* handle, const unsigned char* audio, unsigned char* pcm, int* bytesUsed)
+At9Status Decode(Atrac9Handle* handle, const unsigned char* audio, unsigned char* pcm, int* bytesUsed)
 {
-	handle->frame.frameNum++;
-	bit_reader_cxt br;
-	init_bit_reader_cxt(&br, audio);
-	ERROR_CHECK(DecodeFrame(&handle->frame, &br));
+	handle->Frame.FrameNum++;
+	BitReaderCxt br;
+	InitBitReaderCxt(&br, audio);
+	ERROR_CHECK(DecodeFrame(&handle->Frame, &br));
 
-	PcmFloatToShort(&handle->frame, (short*)pcm);
+	PcmFloatToShort(&handle->Frame, (short*)pcm);
 
-	*bytesUsed = br.position / 8;
+	*bytesUsed = br.Position / 8;
 	return ERR_SUCCESS;
 }
 
-static at9_status DecodeFrame(frame* frame, bit_reader_cxt* br)
+static At9Status DecodeFrame(Frame* frame, BitReaderCxt* br)
 {
 	ERROR_CHECK(UnpackFrame(frame, br));
 
-	for (int i = 0; i < frame->config->ChannelConfig.BlockCount; i++)
+	for (int i = 0; i < frame->Config->ChannelConfig.BlockCount; i++)
 	{
-		block* block = &frame->Blocks[i];
+		Block* block = &frame->Blocks[i];
 
 		DequantizeSpectra(block);
 		ApplyIntensityStereo(block);
@@ -45,19 +45,19 @@ static at9_status DecodeFrame(frame* frame, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static void PcmFloatToShort(frame* frame, short* pcmOut)
+static void PcmFloatToShort(Frame* frame, short* pcmOut)
 {
-	const int endSample = frame->config->FrameSamples;
+	const int endSample = frame->Config->FrameSamples;
 	short* dest = pcmOut;
 	for (int d = 0, s = 0; s < endSample; d++, s++)
 	{
-		for (int i = 0; i < frame->config->ChannelConfig.BlockCount; i++)
+		for (int i = 0; i < frame->Config->ChannelConfig.BlockCount; i++)
 		{
-			block* block = &frame->Blocks[i];
+			Block* block = &frame->Blocks[i];
 
 			for (int j = 0; j < block->ChannelCount; j++)
 			{
-				channel* channel = &block->Channels[j];
+				Channel* channel = &block->Channels[j];
 				double* pcmSrc = channel->Pcm;
 
 				const double sample = pcmSrc[d];
@@ -68,17 +68,17 @@ static void PcmFloatToShort(frame* frame, short* pcmOut)
 	}
 }
 
-static void ImdctBlock(block* block)
+static void ImdctBlock(Block* block)
 {
 	for (int i = 0; i < block->ChannelCount; i++)
 	{
-		channel* channel = &block->Channels[i];
+		Channel* channel = &block->Channels[i];
 
-		RunImdct(&channel->mdct, channel->Spectra, channel->Pcm);
+		RunImdct(&channel->Mdct, channel->Spectra, channel->Pcm);
 	}
 }
 
-static void ApplyIntensityStereo(block* block)
+static void ApplyIntensityStereo(Block* block)
 {
 	if (block->BlockType != Stereo) return;
 
@@ -86,8 +86,8 @@ static void ApplyIntensityStereo(block* block)
 	const int stereoUnits = block->StereoQuantizationUnit;
 	if (stereoUnits >= totalUnits) return;
 
-	channel* source = &block->Channels[block->PrimaryChannelIndex == 0 ? 0 : 1];
-	channel* dest = &block->Channels[block->PrimaryChannelIndex == 0 ? 1 : 0];
+	Channel* source = &block->Channels[block->PrimaryChannelIndex == 0 ? 0 : 1];
+	Channel* dest = &block->Channels[block->PrimaryChannelIndex == 0 ? 1 : 0];
 
 	for (int i = stereoUnits; i < totalUnits; i++)
 	{
@@ -106,15 +106,15 @@ static void ApplyIntensityStereo(block* block)
 	}
 }
 
-int GetCodecInfo(atrac9_handle* handle, CodecInfo * pCodecInfo)
+int GetCodecInfo(Atrac9Handle* handle, CodecInfo * pCodecInfo)
 {
-	pCodecInfo->channels = handle->config.ChannelCount;
-	pCodecInfo->channelConfigIndex = handle->config.ChannelConfigIndex;
-	pCodecInfo->samplingRate = handle->config.SampleRate;
-	pCodecInfo->superframeSize = handle->config.SuperframeBytes;
-	pCodecInfo->framesInSuperframe = handle->config.FramesPerSuperframe;
-	pCodecInfo->frameSamples = handle->config.FrameSamples;
-	pCodecInfo->wlength = handle->wlength;
-	memcpy(pCodecInfo->configData, handle->config.ConfigData, CONFIG_DATA_SIZE);
+	pCodecInfo->Channels = handle->Config.ChannelCount;
+	pCodecInfo->ChannelConfigIndex = handle->Config.ChannelConfigIndex;
+	pCodecInfo->SamplingRate = handle->Config.SampleRate;
+	pCodecInfo->SuperframeSize = handle->Config.SuperframeBytes;
+	pCodecInfo->FramesInSuperframe = handle->Config.FramesPerSuperframe;
+	pCodecInfo->FrameSamples = handle->Config.FrameSamples;
+	pCodecInfo->Wlength = handle->Wlength;
+	memcpy(pCodecInfo->ConfigData, handle->Config.ConfigData, CONFIG_DATA_SIZE);
 	return ERR_SUCCESS;
 }

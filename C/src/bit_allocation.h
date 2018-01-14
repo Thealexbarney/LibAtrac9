@@ -1,6 +1,7 @@
 #pragma once
+
 #include "unpack.h"
 
-at9_status CreateGradient(block* block);
-void CalculateMask(channel* channel);
-void CalculatePrecisions(channel* channel);
+At9Status CreateGradient(Block* block);
+void CalculateMask(Channel* channel);
+void CalculatePrecisions(Channel* channel);

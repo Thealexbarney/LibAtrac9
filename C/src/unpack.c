@@ -1,41 +1,41 @@
-#include "tables.h"
 #include "unpack.h"
 #include "bit_allocation.h"
-#include <string.h>
-#include "scale_factors.h"
-#include "utility.h"
 #include "huffCodes.h"
+#include "scale_factors.h"
+#include "tables.h"
+#include "utility.h"
+#include <string.h>
 
-static at9_status UnpackBlock(block* block, bit_reader_cxt* br);
-static at9_status ReadBlockHeader(block* block, bit_reader_cxt* br);
-static at9_status UnpackStandardBlock(block* block, bit_reader_cxt* br);
-static at9_status ReadBandParams(block* block, bit_reader_cxt* br);
-static at9_status ReadGradientParams(block* block, bit_reader_cxt* br);
-static at9_status ReadStereoParams(block* block, bit_reader_cxt* br);
-static at9_status ReadExtensionParams(block* block, bit_reader_cxt* br);
-static void UpdateCodedUnits(channel* channel);
-static void CalculateSpectrumCodebookIndex(channel* channel);
+static At9Status UnpackBlock(Block* block, BitReaderCxt* br);
+static At9Status ReadBlockHeader(Block* block, BitReaderCxt* br);
+static At9Status UnpackStandardBlock(Block* block, BitReaderCxt* br);
+static At9Status ReadBandParams(Block* block, BitReaderCxt* br);
+static At9Status ReadGradientParams(Block* block, BitReaderCxt* br);
+static At9Status ReadStereoParams(Block* block, BitReaderCxt* br);
+static At9Status ReadExtensionParams(Block* block, BitReaderCxt* br);
+static void UpdateCodedUnits(Channel* channel);
+static void CalculateSpectrumCodebookIndex(Channel* channel);
 
-static at9_status ReadSpectra(channel* channel, bit_reader_cxt* br);
-static at9_status ReadSpectraFine(channel* channel, bit_reader_cxt* br);
+static At9Status ReadSpectra(Channel* channel, BitReaderCxt* br);
+static At9Status ReadSpectraFine(Channel* channel, BitReaderCxt* br);
 
-static at9_status UnpackLfeBlock(block* block, bit_reader_cxt* br);
-static void DecodeLfeScaleFactors(channel* channel, bit_reader_cxt* br);
-static void CalculateLfePrecision(channel* channel);
-static void ReadLfeSpectra(channel* channel, bit_reader_cxt* br);
+static At9Status UnpackLfeBlock(Block* block, BitReaderCxt* br);
+static void DecodeLfeScaleFactors(Channel* channel, BitReaderCxt* br);
+static void CalculateLfePrecision(Channel* channel);
+static void ReadLfeSpectra(Channel* channel, BitReaderCxt* br);
 
-at9_status UnpackFrame(frame* frame, bit_reader_cxt* br)
+At9Status UnpackFrame(Frame* frame, BitReaderCxt* br)
 {
-	const int block_count = frame->config->ChannelConfig.BlockCount;
+	const int blockCount = frame->Config->ChannelConfig.BlockCount;
 
-	for (int i = 0; i < block_count; i++)
+	for (int i = 0; i < blockCount; i++)
 	{
 		ERROR_CHECK(UnpackBlock(&frame->Blocks[i], br));
 	}
 	return ERR_SUCCESS;
 }
 
-static at9_status UnpackBlock(block* block, bit_reader_cxt* br)
+static At9Status UnpackBlock(Block* block, BitReaderCxt* br)
 {
 	ERROR_CHECK(ReadBlockHeader(block, br));
 
@@ -48,14 +48,14 @@ static at9_status UnpackBlock(block* block, bit_reader_cxt* br)
 		ERROR_CHECK(UnpackStandardBlock(block, br));
 	}
 
-	align_position(br, 8);
+	AlignPosition(br, 8);
 	return ERR_SUCCESS;
 }
 
-static at9_status ReadBlockHeader(block* block, bit_reader_cxt* br)
+static At9Status ReadBlockHeader(Block* block, BitReaderCxt* br)
 {
-	block->FirstInSuperframe = !read_int(br, 1);
-	block->ReuseBandParams = read_int(br, 1);
+	block->FirstInSuperframe = !ReadInt(br, 1);
+	block->ReuseBandParams = ReadInt(br, 1);
 
 	if (block->FirstInSuperframe && block->ReuseBandParams && block->BlockType != LFE)
 	{
@@ -65,7 +65,7 @@ static at9_status ReadBlockHeader(block* block, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static at9_status UnpackStandardBlock(block* block, bit_reader_cxt* br)
+static At9Status UnpackStandardBlock(Block* block, BitReaderCxt* br)
 {
 	if (!block->ReuseBandParams)
 	{
@@ -79,10 +79,10 @@ static at9_status UnpackStandardBlock(block* block, bit_reader_cxt* br)
 
 	for (int i = 0; i < block->ChannelCount; i++)
 	{
-		channel* channel = &block->Channels[i];
+		Channel* channel = &block->Channels[i];
 		UpdateCodedUnits(channel);
 
-		ERROR_CHECK(read_scale_factors(channel, br));
+		ERROR_CHECK(ReadScaleFactors(channel, br));
 		CalculateMask(channel);
 		CalculatePrecisions(channel);
 		CalculateSpectrumCodebookIndex(channel);
@@ -95,22 +95,22 @@ static at9_status UnpackStandardBlock(block* block, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static at9_status ReadBandParams(block* block, bit_reader_cxt* br)
+static At9Status ReadBandParams(Block* block, BitReaderCxt* br)
 {
-	const int minBandCount = MinBandCount[block->config->HighSampleRate];
-	const int maxExtensionBand = MaxExtensionBand[block->config->HighSampleRate];
-	block->BandCount = read_int(br, 4) + minBandCount;
+	const int minBandCount = MinBandCount[block->Config->HighSampleRate];
+	const int maxExtensionBand = MaxExtensionBand[block->Config->HighSampleRate];
+	block->BandCount = ReadInt(br, 4) + minBandCount;
 	block->QuantizationUnitCount = BandToQuantUnitCount[block->BandCount];
 
 	if (block->BandCount < minBandCount || block->BandCount >
-		MaxBandCount[block->config->SampleRateIndex])
+		MaxBandCount[block->Config->SampleRateIndex])
 	{
 		return ERR_SUCCESS;
 	}
 
 	if (block->BlockType == Stereo)
 	{
-		block->StereoBand = read_int(br, 4);
+		block->StereoBand = ReadInt(br, 4);
 		block->StereoBand += minBandCount;
 		block->StereoQuantizationUnit = BandToQuantUnitCount[block->StereoBand];
 	}
@@ -119,10 +119,10 @@ static at9_status ReadBandParams(block* block, bit_reader_cxt* br)
 		block->StereoBand = block->BandCount;
 	}
 
-	block->BandExtensionEnabled = read_int(br, 1);
+	block->BandExtensionEnabled = ReadInt(br, 1);
 	if (block->BandExtensionEnabled)
 	{
-		block->ExtensionBand = read_int(br, 4);
+		block->ExtensionBand = ReadInt(br, 4);
 		block->ExtensionBand += minBandCount;
 
 		if (block->ExtensionBand < block->BandCount || block->ExtensionBand > maxExtensionBand)
@@ -141,24 +141,24 @@ static at9_status ReadBandParams(block* block, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static at9_status ReadGradientParams(block* block, bit_reader_cxt* br)
+static At9Status ReadGradientParams(Block* block, BitReaderCxt* br)
 {
-	block->GradientMode = read_int(br, 2);
+	block->GradientMode = ReadInt(br, 2);
 	if (block->GradientMode > 0)
 	{
 		block->GradientEndUnit = 31;
 		block->GradientEndValue = 31;
-		block->GradientStartUnit = read_int(br, 5);
-		block->GradientStartValue = read_int(br, 5);
+		block->GradientStartUnit = ReadInt(br, 5);
+		block->GradientStartValue = ReadInt(br, 5);
 	}
 	else
 	{
-		block->GradientStartUnit = read_int(br, 6);
-		block->GradientEndUnit = read_int(br, 6) + 1;
-		block->GradientStartValue = read_int(br, 5);
-		block->GradientEndValue = read_int(br, 5);
+		block->GradientStartUnit = ReadInt(br, 6);
+		block->GradientEndUnit = ReadInt(br, 6) + 1;
+		block->GradientStartValue = ReadInt(br, 5);
+		block->GradientEndValue = ReadInt(br, 5);
 	}
-	block->GradientBoundary = read_int(br, 4);
+	block->GradientBoundary = ReadInt(br, 4);
 
 	if (block->GradientBoundary > block->QuantizationUnitCount)
 	{
@@ -188,17 +188,17 @@ static at9_status ReadGradientParams(block* block, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static at9_status ReadStereoParams(block* block, bit_reader_cxt* br)
+static At9Status ReadStereoParams(Block* block, BitReaderCxt* br)
 {
 	if (block->BlockType != Stereo) return ERR_SUCCESS;
 
-	block->PrimaryChannelIndex = read_int(br, 1);
-	block->HasJointStereoSigns = read_int(br, 1);
+	block->PrimaryChannelIndex = ReadInt(br, 1);
+	block->HasJointStereoSigns = ReadInt(br, 1);
 	if (block->HasJointStereoSigns)
 	{
 		for (int i = block->StereoQuantizationUnit; i < block->QuantizationUnitCount; i++)
 		{
-			block->JointStereoSigns[i] = read_int(br, 1);
+			block->JointStereoSigns[i] = ReadInt(br, 1);
 		}
 	}
 	else
@@ -209,53 +209,53 @@ static at9_status ReadStereoParams(block* block, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static void BexReadHeader(channel* channel, bit_reader_cxt* br, int bexBand)
+static void BexReadHeader(Channel* channel, BitReaderCxt* br, int bexBand)
 {
-	const int bexMode = read_int(br, 2);
+	const int bexMode = ReadInt(br, 2);
 	channel->BexMode = bexBand > 2 ? bexMode : 4;
 	channel->BexValueCount = BexEncodedValueCounts[channel->BexMode][bexBand];
 }
 
-static void BexReadData(channel* channel, bit_reader_cxt* br, int bexBand)
+static void BexReadData(Channel* channel, BitReaderCxt* br, int bexBand)
 {
 	for (int i = 0; i < channel->BexValueCount; i++)
 	{
 		const int dataLength = BexDataLengths[channel->BexMode][bexBand][i];
-		channel->BexValues[i] = read_int(br, dataLength);
+		channel->BexValues[i] = ReadInt(br, dataLength);
 	}
 }
 
-static at9_status ReadExtensionParams(block* block, bit_reader_cxt* br)
+static At9Status ReadExtensionParams(Block* block, BitReaderCxt* br)
 {
 	int bexBand = 0;
 	if (block->BandExtensionEnabled)
 	{
-		bexBand = BexGroupInfo[block->QuantizationUnitCount - 13].band_count;
+		bexBand = BexGroupInfo[block->QuantizationUnitCount - 13].BandCount;
 		if (block->BlockType == Stereo)
 		{
 			BexReadHeader(&block->Channels[1], br, bexBand);
 		}
 		else
 		{
-			br->position += 1;
+			br->Position += 1;
 		}
 	}
-	block->HasExtensionData = read_int(br, 1);
+	block->HasExtensionData = ReadInt(br, 1);
 
 	if (!block->HasExtensionData) return ERR_SUCCESS;
 	if (!block->BandExtensionEnabled)
 	{
-		block->BexMode = read_int(br, 2);
-		block->BexDataLength = read_int(br, 5);
-		br->position += block->BexDataLength;
+		block->BexMode = ReadInt(br, 2);
+		block->BexDataLength = ReadInt(br, 5);
+		br->Position += block->BexDataLength;
 		return ERR_SUCCESS;
 	}
 
 	BexReadHeader(&block->Channels[0], br, bexBand);
 
-	block->BexDataLength = read_int(br, 5);
+	block->BexDataLength = ReadInt(br, 5);
 	if (block->BexDataLength <= 0) return ERR_SUCCESS;
-	const int bexDataEnd = br->position + block->BexDataLength;
+	const int bexDataEnd = br->Position + block->BexDataLength;
 
 	BexReadData(&block->Channels[0], br, bexBand);
 
@@ -265,7 +265,7 @@ static at9_status ReadExtensionParams(block* block, bit_reader_cxt* br)
 	}
 
 	// Make sure we didn't read too many bits
-	if (br->position > bexDataEnd)
+	if (br->Position > bexDataEnd)
 	{
 		return ERR_UNPACK_EXTENSION_DATA_INVALID;
 	}
@@ -273,7 +273,7 @@ static at9_status ReadExtensionParams(block* block, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static void UpdateCodedUnits(channel* channel)
+static void UpdateCodedUnits(Channel* channel)
 {
 	if (channel->Block->PrimaryChannelIndex == channel->ChannelIndex)
 	{
@@ -285,14 +285,14 @@ static void UpdateCodedUnits(channel* channel)
 	}
 }
 
-static void CalculateSpectrumCodebookIndex(channel* channel)
+static void CalculateSpectrumCodebookIndex(Channel* channel)
 {
 	memset(channel->CodebookSet, 0, sizeof(channel->CodebookSet));
 	const int quantUnits = channel->CodedQuantUnits;
 	int* sf = channel->ScaleFactors;
 
 	if (quantUnits <= 1) return;
-	if (channel->config->HighSampleRate) return;
+	if (channel->Config->HighSampleRate) return;
 
 	// Temporarily setting this value allows for simpler code by
 	// making the last value a non-special case.
@@ -313,7 +313,7 @@ static void CalculateSpectrumCodebookIndex(channel* channel)
 	{
 		const int prevSf = sf[i - 1];
 		const int nextSf = sf[i + 1];
-		const int minSf = min(prevSf, nextSf);
+		const int minSf = Min(prevSf, nextSf);
 		if (sf[i] - minSf >= 3 || sf[i] - prevSf + sf[i] - nextSf >= 3)
 		{
 			channel->CodebookSet[i] = 1;
@@ -324,7 +324,7 @@ static void CalculateSpectrumCodebookIndex(channel* channel)
 	{
 		if (channel->CodebookSet[i] == 0)
 		{
-			const int minSf = min(sf[i - 1], sf[i + 1]);
+			const int minSf = Min(sf[i - 1], sf[i + 1]);
 			if (sf[i] - minSf >= 2 && sf[i] >= avg - (QuantUnitToCoeffCount[i] == 16 ? 1 : 0))
 			{
 				channel->CodebookSet[i] = 1;
@@ -335,11 +335,11 @@ static void CalculateSpectrumCodebookIndex(channel* channel)
 	sf[quantUnits] = originalScaleTmp;
 }
 
-static at9_status ReadSpectra(channel* channel, bit_reader_cxt* br)
+static At9Status ReadSpectra(Channel* channel, BitReaderCxt* br)
 {
 	int values[16];
 	memset(channel->QuantizedSpectra, 0, sizeof(channel->QuantizedSpectra));
-	const int maxHuffPrecision = MaxHuffPrecision[channel->config->HighSampleRate];
+	const int maxHuffPrecision = MaxHuffPrecision[channel->Config->HighSampleRate];
 
 	for (int i = 0; i < channel->CodedQuantUnits; i++)
 	{
@@ -361,7 +361,7 @@ static at9_status ReadSpectra(channel* channel, bit_reader_cxt* br)
 			const int subbandIndex = QuantUnitToCoeffIndex[i];
 			for (int j = subbandIndex; j < QuantUnitToCoeffIndex[i + 1]; j++)
 			{
-				channel->QuantizedSpectra[j] = read_signed_int(br, precision);
+				channel->QuantizedSpectra[j] = ReadSignedInt(br, precision);
 			}
 		}
 	}
@@ -369,7 +369,7 @@ static at9_status ReadSpectra(channel* channel, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static at9_status ReadSpectraFine(channel* channel, bit_reader_cxt* br)
+static At9Status ReadSpectraFine(Channel* channel, BitReaderCxt* br)
 {
 	memset(channel->QuantizedSpectraFine, 0, sizeof(channel->QuantizedSpectraFine));
 
@@ -383,16 +383,16 @@ static at9_status ReadSpectraFine(channel* channel, bit_reader_cxt* br)
 
 			for (int j = startSubband; j < endSubband; j++)
 			{
-				channel->QuantizedSpectraFine[j] = read_signed_int(br, overflowBits);
+				channel->QuantizedSpectraFine[j] = ReadSignedInt(br, overflowBits);
 			}
 		}
 	}
 	return ERR_SUCCESS;
 }
 
-static at9_status UnpackLfeBlock(block* block, bit_reader_cxt* br)
+static At9Status UnpackLfeBlock(Block* block, BitReaderCxt* br)
 {
-	channel* channel = &block->Channels[0];
+	Channel* channel = &block->Channels[0];
 	block->QuantizationUnitCount = 2;
 
 	DecodeLfeScaleFactors(channel, br);
@@ -403,18 +403,18 @@ static at9_status UnpackLfeBlock(block* block, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-static void DecodeLfeScaleFactors(channel* channel, bit_reader_cxt* br)
+static void DecodeLfeScaleFactors(Channel* channel, BitReaderCxt* br)
 {
 	memset(channel->ScaleFactors, 0, sizeof(channel->ScaleFactors));
 	for (int i = 0; i < channel->Block->QuantizationUnitCount; i++)
 	{
-		channel->ScaleFactors[i] = read_int(br, 5);
+		channel->ScaleFactors[i] = ReadInt(br, 5);
 	}
 }
 
-static void CalculateLfePrecision(channel* channel)
+static void CalculateLfePrecision(Channel* channel)
 {
-	block* block = channel->Block;
+	Block* block = channel->Block;
 	const int precision = block->ReuseBandParams ? 8 : 4;
 	for (int i = 0; i < block->QuantizationUnitCount; i++)
 	{
@@ -423,7 +423,7 @@ static void CalculateLfePrecision(channel* channel)
 	}
 }
 
-static void ReadLfeSpectra(channel* channel, bit_reader_cxt* br)
+static void ReadLfeSpectra(Channel* channel, BitReaderCxt* br)
 {
 	memset(channel->QuantizedSpectra, 0, sizeof(channel->QuantizedSpectra));
 
@@ -434,7 +434,7 @@ static void ReadLfeSpectra(channel* channel, bit_reader_cxt* br)
 		const int precision = channel->Precisions[i] + 1;
 		for (int j = QuantUnitToCoeffIndex[i]; j < QuantUnitToCoeffIndex[i + 1]; j++)
 		{
-			channel->QuantizedSpectra[j] = read_signed_int(br, precision);
+			channel->QuantizedSpectra[j] = ReadSignedInt(br, precision);
 		}
 	}
 }

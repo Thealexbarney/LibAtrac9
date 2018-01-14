@@ -1,43 +1,43 @@
-#include "bit_reader.h"
 #include "decinit.h"
+#include "bit_reader.h"
 #include "error_codes.h"
+#include "huffCodes.h"
 #include "structures.h"
 #include "tables.h"
-#include <string.h>
-#include <math.h>
 #include "utility.h"
-#include "huffCodes.h"
+#include <math.h>
+#include <string.h>
 
-static at9_status init_config_data(ConfigData* config, unsigned char * config_data);
-static at9_status read_config_data(ConfigData* config);
-static at9_status init_frame(atrac9_handle* handle);
-static at9_status init_block(block* block, frame* parent_frame, int block_index);
-static at9_status init_channel(channel* channel, block* parent_block, int channel_index);
-static void init_huffman_codebooks();
-static void init_huffman_set(const HuffmanCodebook* codebooks, int count);
+static At9Status InitConfigData(ConfigData* config, unsigned char * configData);
+static At9Status ReadConfigData(ConfigData* config);
+static At9Status InitFrame(Atrac9Handle* handle);
+static At9Status InitBlock(Block* block, Frame* parentFrame, int blockIndex);
+static At9Status InitChannel(Channel* channel, Block* parentBlock, int channelIndex);
+static void InitHuffmanCodebooks();
+static void InitHuffmanSet(const HuffmanCodebook* codebooks, int count);
 static void GenerateTrigTables(int sizeBits);
 static void GenerateShuffleTable(int sizeBits);
-static void init_mdct_tables(int frameSizePower);
+static void InitMdctTables(int frameSizePower);
 static void GenerateMdctWindow(int frameSizePower);
 static void GenerateImdctWindow(int frameSizePower);
 
-static int BlockTypeToChannelCount(BlockType block_type);
+static int BlockTypeToChannelCount(BlockType blockType);
 
-at9_status init_decoder(atrac9_handle* handle, unsigned char* config_data, int wlength)
+At9Status InitDecoder(Atrac9Handle* handle, unsigned char* configData, int wlength)
 {
-	ERROR_CHECK(init_config_data(&handle->config, config_data));
-	ERROR_CHECK(init_frame(handle));
-	init_mdct_tables(handle->config.FrameSamplesPower);
-	init_huffman_codebooks();
-	handle->wlength = wlength;
-	handle->initialized = 1;
+	ERROR_CHECK(InitConfigData(&handle->Config, configData));
+	ERROR_CHECK(InitFrame(handle));
+	InitMdctTables(handle->Config.FrameSamplesPower);
+	InitHuffmanCodebooks();
+	handle->Wlength = wlength;
+	handle->Initialized = 1;
 	return ERR_SUCCESS;
 }
 
-static at9_status init_config_data(ConfigData* config, unsigned char* config_data)
+static At9Status InitConfigData(ConfigData* config, unsigned char* configData)
 {
-	memcpy(config->ConfigData, config_data, CONFIG_DATA_SIZE);
-	ERROR_CHECK(read_config_data(config));
+	memcpy(config->ConfigData, configData, CONFIG_DATA_SIZE);
+	ERROR_CHECK(ReadConfigData(config));
 
 	config->FramesPerSuperframe = 1 << config->SuperframeIndex;
 	config->SuperframeBytes = config->FrameBytes << config->SuperframeIndex;
@@ -53,19 +53,19 @@ static at9_status init_config_data(ConfigData* config, unsigned char* config_dat
 	return ERR_SUCCESS;
 }
 
-static at9_status read_config_data(ConfigData* config)
+static At9Status ReadConfigData(ConfigData* config)
 {
-	bit_reader_cxt br;
-	init_bit_reader_cxt(&br, &config->ConfigData);
+	BitReaderCxt br;
+	InitBitReaderCxt(&br, &config->ConfigData);
 
-	const int header = read_int(&br, 8);
-	config->SampleRateIndex = read_int(&br, 4);
-	config->ChannelConfigIndex = read_int(&br, 3);
-	const int validation_bit = read_int(&br, 1);
-	config->FrameBytes = read_int(&br, 11) + 1;
-	config->SuperframeIndex = read_int(&br, 2);
+	const int header = ReadInt(&br, 8);
+	config->SampleRateIndex = ReadInt(&br, 4);
+	config->ChannelConfigIndex = ReadInt(&br, 3);
+	const int validationBit = ReadInt(&br, 1);
+	config->FrameBytes = ReadInt(&br, 11) + 1;
+	config->SuperframeIndex = ReadInt(&br, 2);
 
-	if (header != 0xFE || validation_bit != 0)
+	if (header != 0xFE || validationBit != 0)
 	{
 		return ERR_BAD_CONFIG_DATA;
 	}
@@ -73,53 +73,53 @@ static at9_status read_config_data(ConfigData* config)
 	return ERR_SUCCESS;
 }
 
-static at9_status init_frame(atrac9_handle* handle)
+static At9Status InitFrame(Atrac9Handle* handle)
 {
-	const int block_count = handle->config.ChannelConfig.BlockCount;
-	handle->frame.config = &handle->config;
+	const int blockCount = handle->Config.ChannelConfig.BlockCount;
+	handle->Frame.Config = &handle->Config;
 
-	for (int i = 0; i < block_count; i++)
+	for (int i = 0; i < blockCount; i++)
 	{
-		ERROR_CHECK(init_block(&handle->frame.Blocks[i], &handle->frame, i));
+		ERROR_CHECK(InitBlock(&handle->Frame.Blocks[i], &handle->Frame, i));
 	}
 
 	return ERR_SUCCESS;
 }
 
-static at9_status init_block(block* block, frame* parent_frame, int block_index)
+static At9Status InitBlock(Block* block, Frame* parentFrame, int blockIndex)
 {
-	block->Frame = parent_frame;
-	block->BlockIndex = block_index;
-	block->config = parent_frame->config;
-	block->BlockType = block->config->ChannelConfig.Types[block_index];
+	block->Frame = parentFrame;
+	block->BlockIndex = blockIndex;
+	block->Config = parentFrame->Config;
+	block->BlockType = block->Config->ChannelConfig.Types[blockIndex];
 	block->ChannelCount = BlockTypeToChannelCount(block->BlockType);
 
 	for (int i = 0; i < block->ChannelCount; i++)
 	{
-		ERROR_CHECK(init_channel(&block->Channels[i], block, i));
+		ERROR_CHECK(InitChannel(&block->Channels[i], block, i));
 	}
 
 	return ERR_SUCCESS;
 }
 
-static at9_status init_channel(channel* channel, block* parent_block, int channel_index)
+static At9Status InitChannel(Channel* channel, Block* parentBlock, int channelIndex)
 {
-	channel->Block = parent_block;
-	channel->Frame = parent_block->Frame;
-	channel->config = parent_block->config;
-	channel->ChannelIndex = channel_index;
-	channel->mdct.bits = parent_block->config->FrameSamplesPower;
+	channel->Block = parentBlock;
+	channel->Frame = parentBlock->Frame;
+	channel->Config = parentBlock->Config;
+	channel->ChannelIndex = channelIndex;
+	channel->Mdct.Bits = parentBlock->Config->FrameSamplesPower;
 	return ERR_SUCCESS;
 }
 
-static void init_huffman_codebooks()
+static void InitHuffmanCodebooks()
 {
-	init_huffman_set(HuffmanScaleFactorsUnsigned, sizeof(HuffmanScaleFactorsUnsigned) / sizeof(HuffmanCodebook));
-	init_huffman_set(HuffmanScaleFactorsSigned, sizeof(HuffmanScaleFactorsSigned) / sizeof(HuffmanCodebook));
-	init_huffman_set((HuffmanCodebook*)HuffmanSpectrum, sizeof(HuffmanSpectrum) / sizeof(HuffmanCodebook));
+	InitHuffmanSet(HuffmanScaleFactorsUnsigned, sizeof(HuffmanScaleFactorsUnsigned) / sizeof(HuffmanCodebook));
+	InitHuffmanSet(HuffmanScaleFactorsSigned, sizeof(HuffmanScaleFactorsSigned) / sizeof(HuffmanCodebook));
+	InitHuffmanSet((HuffmanCodebook*)HuffmanSpectrum, sizeof(HuffmanSpectrum) / sizeof(HuffmanCodebook));
 }
 
-static void init_huffman_set(const HuffmanCodebook* codebooks, int count)
+static void InitHuffmanSet(const HuffmanCodebook* codebooks, int count)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -127,7 +127,7 @@ static void init_huffman_set(const HuffmanCodebook* codebooks, int count)
 	}
 }
 
-static void init_mdct_tables(int frameSizePower)
+static void InitMdctTables(int frameSizePower)
 {
 	for (int i = 0; i < 9; i++)
 	{
@@ -186,9 +186,9 @@ static void GenerateImdctWindow(int frameSizePower)
 	}
 }
 
-static int BlockTypeToChannelCount(BlockType block_type)
+static int BlockTypeToChannelCount(BlockType blockType)
 {
-	switch (block_type)
+	switch (blockType)
 	{
 	case Mono:
 		return 1;

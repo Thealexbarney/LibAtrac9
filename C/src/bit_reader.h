@@ -1,15 +1,15 @@
 #pragma once
 
 typedef struct {
-	const unsigned char * buffer;
-	int position;
-} bit_reader_cxt;
+	const unsigned char * Buffer;
+	int Position;
+} BitReaderCxt;
 
 // Make MSVC compiler happy. Leave const in for value parameters
 
-void init_bit_reader_cxt(bit_reader_cxt* br, const void * buffer);
-int peek_int(bit_reader_cxt* br, const int bits);
-int read_int(bit_reader_cxt* br, const int bits);
-int read_signed_int(bit_reader_cxt* br, const int bits);
-int read_offset_binary(bit_reader_cxt* br, const int bits);
-void align_position(bit_reader_cxt* br, const unsigned int multiple);
+void InitBitReaderCxt(BitReaderCxt* br, const void * buffer);
+int PeekInt(BitReaderCxt* br, const int bits);
+int ReadInt(BitReaderCxt* br, const int bits);
+int ReadSignedInt(BitReaderCxt* br, const int bits);
+int ReadOffsetBinary(BitReaderCxt* br, const int bits);
+void AlignPosition(BitReaderCxt* br, const unsigned int multiple);

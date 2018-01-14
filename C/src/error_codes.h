@@ -1,6 +1,6 @@
 #pragma once
 
-typedef enum at9_status
+typedef enum At9Status
 {
 	ERR_SUCCESS = 0,
 
@@ -23,10 +23,10 @@ typedef enum at9_status
 	ERR_UNPACK_SCALE_FACTOR_OOB,
 
 	ERR_UNPACK_EXTENSION_DATA_INVALID
-} at9_status;
+} At9Status;
 
 #define ERROR_CHECK(x) do { \
-  at9_status status = (x); \
+  At9Status status = (x); \
   if (status != ERR_SUCCESS) { \
     return status; \
   } \

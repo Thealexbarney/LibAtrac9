@@ -3,7 +3,7 @@
 #include "utility.h"
 #include <string.h>
 
-at9_status CreateGradient(block* block)
+At9Status CreateGradient(Block* block)
 {
 	int valueCount = block->GradientEndValue - block->GradientStartValue;
 	int unitCount = block->GradientEndUnit - block->GradientStartUnit;
@@ -43,7 +43,7 @@ at9_status CreateGradient(block* block)
 	return ERR_SUCCESS;
 }
 
-void CalculateMask(channel* channel)
+void CalculateMask(Channel* channel)
 {
 	memset(channel->PrecisionMask, 0, sizeof(channel->PrecisionMask));
 	for (int i = 1; i < channel->Block->QuantizationUnitCount; i++)
@@ -51,18 +51,18 @@ void CalculateMask(channel* channel)
 		const int delta = channel->ScaleFactors[i] - channel->ScaleFactors[i - 1];
 		if (delta > 1)
 		{
-			channel->PrecisionMask[i] += min(delta - 1, 5);
+			channel->PrecisionMask[i] += Min(delta - 1, 5);
 		}
 		else if (delta < -1)
 		{
-			channel->PrecisionMask[i - 1] += min(delta * -1 - 1, 5);
+			channel->PrecisionMask[i - 1] += Min(delta * -1 - 1, 5);
 		}
 	}
 }
 
-void CalculatePrecisions(channel* channel)
+void CalculatePrecisions(Channel* channel)
 {
-	block* block = channel->Block;
+	Block* block = channel->Block;
 
 	if (block->GradientMode != 0)
 	{

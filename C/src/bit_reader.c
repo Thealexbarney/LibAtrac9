@@ -1,110 +1,110 @@
 #include "bit_reader.h"
 #include "utility.h"
 
-static int peek_int_fallback(bit_reader_cxt* br, int bit_count);
+static int PeekIntFallback(BitReaderCxt* br, int bitCount);
 
-void init_bit_reader_cxt(bit_reader_cxt* br, const void * buffer)
+void InitBitReaderCxt(BitReaderCxt* br, const void * buffer)
 {
-	br->buffer = buffer;
-	br->position = 0;
+	br->Buffer = buffer;
+	br->Position = 0;
 }
 
-int read_int(bit_reader_cxt* br, const int bits)
+int ReadInt(BitReaderCxt* br, const int bits)
 {
-	const int value = peek_int(br, bits);
-	br->position += bits;
+	const int value = PeekInt(br, bits);
+	br->Position += bits;
 	return value;
 }
 
-int read_signed_int(bit_reader_cxt* br, const int bits)
+int ReadSignedInt(BitReaderCxt* br, const int bits)
 {
-	const int value = peek_int(br, bits);
-	br->position += bits;
+	const int value = PeekInt(br, bits);
+	br->Position += bits;
 	return SignExtend32(value, bits);
 }
 
-int read_offset_binary(bit_reader_cxt* br, const int bits)
+int ReadOffsetBinary(BitReaderCxt* br, const int bits)
 {
 	const int offset = 1 << (bits - 1);
-	const int value = peek_int(br, bits) - offset;
-	br->position += bits;
+	const int value = PeekInt(br, bits) - offset;
+	br->Position += bits;
 	return value;
 }
 
-int peek_int(bit_reader_cxt* br, const int bits)
+int PeekInt(BitReaderCxt* br, const int bits)
 {
-	const int byte_index = br->position / 8;
-	const int bit_index = br->position % 8;
-	const unsigned char* buffer = br->buffer;
+	const int byteIndex = br->Position / 8;
+	const int bitIndex = br->Position % 8;
+	const unsigned char* buffer = br->Buffer;
 
 	if (bits <= 9)
 	{
-		int value = buffer[byte_index] << 8 | buffer[byte_index + 1];
-		value &= 0xFFFF >> bit_index;
-		value >>= 16 - bits - bit_index;
+		int value = buffer[byteIndex] << 8 | buffer[byteIndex + 1];
+		value &= 0xFFFF >> bitIndex;
+		value >>= 16 - bits - bitIndex;
 		return value;
 	}
 
 	if (bits <= 17)
 	{
-		int value = buffer[byte_index] << 16 | buffer[byte_index + 1] << 8 | buffer[byte_index + 2];
-		value &= 0xFFFFFF >> bit_index;
-		value >>= 24 - bits - bit_index;
+		int value = buffer[byteIndex] << 16 | buffer[byteIndex + 1] << 8 | buffer[byteIndex + 2];
+		value &= 0xFFFFFF >> bitIndex;
+		value >>= 24 - bits - bitIndex;
 		return value;
 	}
 
 	if (bits <= 25)
 	{
-		int value = buffer[byte_index] << 24
-			| buffer[byte_index + 1] << 16
-			| buffer[byte_index + 2] << 8
-			| buffer[byte_index + 3];
+		int value = buffer[byteIndex] << 24
+			| buffer[byteIndex + 1] << 16
+			| buffer[byteIndex + 2] << 8
+			| buffer[byteIndex + 3];
 
-		value &= (int)(0xFFFFFFFF >> bit_index);
-		value >>= 32 - bits - bit_index;
+		value &= (int)(0xFFFFFFFF >> bitIndex);
+		value >>= 32 - bits - bitIndex;
 		return value;
 	}
-	return peek_int_fallback(br, bits);
+	return PeekIntFallback(br, bits);
 }
 
-void align_position(bit_reader_cxt* br, const unsigned int multiple)
+void AlignPosition(BitReaderCxt* br, const unsigned int multiple)
 {
-	const int position = br->position;
+	const int position = br->Position;
 	if (position % multiple == 0)
 	{
 		return;
 	}
 
-	br->position = position + multiple - position % multiple;
+	br->Position = position + multiple - position % multiple;
 }
 
-static int peek_int_fallback(bit_reader_cxt* br, int bit_count)
+static int PeekIntFallback(BitReaderCxt* br, int bitCount)
 {
 	int value = 0;
-	int byte_index = br->position / 8;
-	int bit_index = br->position % 8;
-	const unsigned char* buffer = br->buffer;
+	int byteIndex = br->Position / 8;
+	int bitIndex = br->Position % 8;
+	const unsigned char* buffer = br->Buffer;
 
-	while (bit_count > 0)
+	while (bitCount > 0)
 	{
-		if (bit_index >= 8)
+		if (bitIndex >= 8)
 		{
-			bit_index = 0;
-			byte_index++;
+			bitIndex = 0;
+			byteIndex++;
 		}
 
-		int bits_to_read = bit_count;
-		if (bits_to_read > 8 - bit_index)
+		int bitsToRead = bitCount;
+		if (bitsToRead > 8 - bitIndex)
 		{
-			bits_to_read = 8 - bit_index;
+			bitsToRead = 8 - bitIndex;
 		}
 
-		const int mask = 0xFF >> bit_index;
-		const int current_byte = (mask & buffer[byte_index]) >> (8 - bit_index - bits_to_read);
+		const int mask = 0xFF >> bitIndex;
+		const int currentByte = (mask & buffer[byteIndex]) >> (8 - bitIndex - bitsToRead);
 
-		value = (value << bits_to_read) | current_byte;
-		bit_index += bits_to_read;
-		bit_count -= bits_to_read;
+		value = (value << bitsToRead) | currentByte;
+		bitIndex += bitsToRead;
+		bitCount -= bitsToRead;
 	}
 	return value;
 }

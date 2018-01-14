@@ -1,4 +1,5 @@
 #pragma once
+
 #include "bit_reader.h"
 
 typedef struct
@@ -14,7 +15,7 @@ typedef struct
 	const int MaxBitSize;
 } HuffmanCodebook;
 
-int ReadHuffmanValue(const HuffmanCodebook* huff, bit_reader_cxt* br, int is_signed);
+int ReadHuffmanValue(const HuffmanCodebook* huff, BitReaderCxt* br, int isSigned);
 void DecodeHuffmanValues(int* spectrum, int index, int bandCount, const HuffmanCodebook* huff, const int* values);
 void InitHuffmanCodebook(const HuffmanCodebook* codebook);
 

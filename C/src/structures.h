@@ -8,8 +8,8 @@
 
 #define MAX_QUANT_UNITS 30
 
-typedef struct frame frame;
-typedef struct block block;
+typedef struct Frame Frame;
+typedef struct Block Block;
 
 typedef enum BlockType {
 	Mono = 0,
@@ -42,30 +42,30 @@ typedef struct {
 } ConfigData;
 
 typedef struct {
-	int initialized;
-	unsigned short stateA;
-	unsigned short stateB;
-	unsigned short stateC;
-	unsigned short stateD;
-} rng_cxt;
+	int Initialized;
+	unsigned short StateA;
+	unsigned short StateB;
+	unsigned short StateC;
+	unsigned short StateD;
+} RngCxt;
 
 typedef struct {
-	int bits;
-	int size;
-	double scale;
-	double _imdctPrevious[MAX_FRAME_SAMPLES];
-	double* window;
-	double* sinTable;
-	double* cosTable;
-} mdct;
+	int Bits;
+	int Size;
+	double Scale;
+	double ImdctPrevious[MAX_FRAME_SAMPLES];
+	double* Window;
+	double* SinTable;
+	double* CosTable;
+} Mdct;
 
 typedef struct {
-	frame* Frame;
-	block* Block;
-	ConfigData* config;
+	Frame* Frame;
+	Block* Block;
+	ConfigData* Config;
 	int ChannelIndex;
 
-	mdct mdct;
+	Mdct Mdct;
 
 	double Pcm[MAX_FRAME_SAMPLES];
 	double Spectra[MAX_FRAME_SAMPLES];
@@ -89,15 +89,15 @@ typedef struct {
 	int BexValueCount;
 	int BexValues[MAX_BEX_VALUES];
 
-	rng_cxt rng;
-} channel;
+	RngCxt Rng;
+} Channel;
 
-struct block {
-	frame* Frame;
-	ConfigData* config;
+struct Block {
+	Frame* Frame;
+	ConfigData* Config;
 	enum BlockType BlockType;
 	int BlockIndex;
-	channel Channels[MAX_BLOCK_CHANNEL_COUNT];
+	Channel Channels[MAX_BLOCK_CHANNEL_COUNT];
 	int ChannelCount;
 	int FirstInSuperframe;
 	int ReuseBandParams;
@@ -128,33 +128,33 @@ struct block {
 	int BexMode;
 };
 
-struct frame {
-	ConfigData* config;
+struct Frame {
+	ConfigData* Config;
 	int FrameIndex;
-	block Blocks[MAX_BLOCK_COUNT];
-	int frameNum;
+	Block Blocks[MAX_BLOCK_COUNT];
+	int FrameNum;
 };
 
 typedef struct {
-	int initialized;
-	int wlength;
-	ConfigData config;
-	frame frame;
-} atrac9_handle;
+	int Initialized;
+	int Wlength;
+	ConfigData Config;
+	Frame Frame;
+} Atrac9Handle;
 
 typedef struct {
-	int group_b_unit;
-	int group_c_unit;
-	int band_count;
-} bex_group;
+	int GroupBUnit;
+	int GroupCUnit;
+	int BandCount;
+} BexGroup;
 
 typedef struct {
-	int channels;
-	int channelConfigIndex;
-	int samplingRate;
-	int superframeSize;
-	int framesInSuperframe;
-	int frameSamples;
-	int wlength;
-	unsigned char configData[CONFIG_DATA_SIZE];
+	int Channels;
+	int ChannelConfigIndex;
+	int SamplingRate;
+	int SuperframeSize;
+	int FramesInSuperframe;
+	int FrameSamples;
+	int Wlength;
+	unsigned char ConfigData[CONFIG_DATA_SIZE];
 } CodecInfo;

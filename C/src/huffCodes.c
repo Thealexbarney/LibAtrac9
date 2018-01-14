@@ -1,14 +1,14 @@
-#include <stdint.h>
 #include "huffCodes.h"
 #include "utility.h"
+#include <stdint.h>
 
-int ReadHuffmanValue(const HuffmanCodebook* huff, bit_reader_cxt* br, int is_signed)
+int ReadHuffmanValue(const HuffmanCodebook* huff, BitReaderCxt* br, int isSigned)
 {
-	const int code = peek_int(br, huff->MaxBitSize);
+	const int code = PeekInt(br, huff->MaxBitSize);
 	const unsigned char value = huff->Lookup[code];
 	const int bits = huff->Bits[value];
-	br->position += bits;
-	return is_signed ? SignExtend32(value, huff->ValueBits) : value;
+	br->Position += bits;
+	return isSigned ? SignExtend32(value, huff->ValueBits) : value;
 }
 
 void DecodeHuffmanValues(int* spectrum, int index, int bandCount, const HuffmanCodebook* huff, const int* values)

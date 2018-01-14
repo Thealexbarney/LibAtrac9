@@ -2,4 +2,4 @@
 
 #include "structures.h"
 
-void ApplyBandExtension(block* block);
+void ApplyBandExtension(Block* block);

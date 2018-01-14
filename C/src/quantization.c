@@ -1,15 +1,15 @@
 #include "quantization.h"
-#include <string.h>
 #include "tables.h"
+#include <string.h>
 
-static void DequantizeQuantUnit(channel* channel, int band);
-static void ScaleSpectrumChannel(channel* channel);
+static void DequantizeQuantUnit(Channel* channel, int band);
+static void ScaleSpectrumChannel(Channel* channel);
 
-void DequantizeSpectra(block* block)
+void DequantizeSpectra(Block* block)
 {
 	for (int i = 0; i < block->ChannelCount; i++)
 	{
-		channel* channel = &block->Channels[i];
+		Channel* channel = &block->Channels[i];
 		memset(channel->Spectra, 0, sizeof(channel->Spectra));
 
 		for (int j = 0; j < channel->CodedQuantUnits; j++)
@@ -19,7 +19,7 @@ void DequantizeSpectra(block* block)
 	}
 }
 
-static void DequantizeQuantUnit(channel* channel, int band)
+static void DequantizeQuantUnit(Channel* channel, int band)
 {
 	const int subBandIndex = QuantUnitToCoeffIndex[band];
 	const int subBandCount = QuantUnitToCoeffCount[band];
@@ -34,7 +34,7 @@ static void DequantizeQuantUnit(channel* channel, int band)
 	}
 }
 
-void ScaleSpectrumBlock(block* block)
+void ScaleSpectrumBlock(Block* block)
  {
 	 for (int i = 0; i < block->ChannelCount; i++)
 	 {
@@ -42,7 +42,7 @@ void ScaleSpectrumBlock(block* block)
 	 }
  }
 
-static void ScaleSpectrumChannel(channel* channel)
+static void ScaleSpectrumChannel(Channel* channel)
 {
 	 const int quantUnitCount = channel->Block->QuantizationUnitCount;
 	 double* spectra = channel->Spectra;

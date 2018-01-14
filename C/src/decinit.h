@@ -3,4 +3,4 @@
 #include "error_codes.h"
 #include "structures.h"
 
-at9_status init_decoder(atrac9_handle* handle, unsigned char * config_data, int wlength);
+At9Status InitDecoder(Atrac9Handle* handle, unsigned char * configData, int wlength);

@@ -2,5 +2,5 @@
 
 #include "structures.h"
 
-void DequantizeSpectra(block* block);
-void ScaleSpectrumBlock(block* block);
+void DequantizeSpectra(Block* block);
+void ScaleSpectrumBlock(Block* block);

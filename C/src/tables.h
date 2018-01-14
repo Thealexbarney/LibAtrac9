@@ -187,7 +187,7 @@ static const double QuantizerFineStepSize[16] =
 	3.7258019525568114e-09, 1.8627872668859698e-09, 9.3136520869755679e-10, 4.6567549848772173e-10
 };
 
-static const bex_group BexGroupInfo[8] =
+static const BexGroup BexGroupInfo[8] =
 {
 	{ 16, 21, 0 },
 	{ 18, 22, 1 },

@@ -3,16 +3,16 @@
 #include "utility.h"
 #include <math.h>
 
-static void ApplyBandExtensionChannel(channel* channel);
+static void ApplyBandExtensionChannel(Channel* channel);
 
 static void ScaleBexQuantUnits(double* spectra, double* scales, int startUnit, int totalUnits);
 static void FillHighFrequencies(double* spectra, int groupABin, int groupBBin, int groupCBin, int totalBins);
-static void AddNoiseToSpectrum(channel* channel, int index, int count);
+static void AddNoiseToSpectrum(Channel* channel, int index, int count);
 
-static void rng_init(rng_cxt* rng, unsigned short seed);
-static unsigned short rng_next(rng_cxt* rng);
+static void RngInit(RngCxt* rng, unsigned short seed);
+static unsigned short RngNext(RngCxt* rng);
 
-void ApplyBandExtension(block* block)
+void ApplyBandExtension(Block* block)
 {
 	if (!block->BandExtensionEnabled || !block->HasExtensionData) return;
 
@@ -22,7 +22,7 @@ void ApplyBandExtension(block* block)
 	}
 }
 
-static void ApplyBandExtensionChannel(channel* channel)
+static void ApplyBandExtensionChannel(Channel* channel)
 {
 	const int groupAUnit = channel->Block->QuantizationUnitCount;
 	int* scaleFactors = channel->ScaleFactors;
@@ -30,12 +30,12 @@ static void ApplyBandExtensionChannel(channel* channel)
 	double scales[6];
 	int* values = channel->BexValues;
 
-	const bex_group* bex_info = &BexGroupInfo[channel->Block->QuantizationUnitCount - 13];
-	const int bandCount = bex_info->band_count;
-	const int groupBUnit = bex_info->group_b_unit;
-	const int groupCUnit = bex_info->group_c_unit;
+	const BexGroup* bexInfo = &BexGroupInfo[channel->Block->QuantizationUnitCount - 13];
+	const int bandCount = bexInfo->BandCount;
+	const int groupBUnit = bexInfo->GroupBUnit;
+	const int groupCUnit = bexInfo->GroupCUnit;
 
-	const int totalUnits = max(groupCUnit, 22);
+	const int totalUnits = Max(groupCUnit, 22);
 	const int bexQuantUnits = totalUnits - groupAUnit;
 
 	const int groupABin = QuantUnitToCoeffIndex[groupAUnit];
@@ -164,37 +164,37 @@ static void FillHighFrequencies(double* spectra, int groupABin, int groupBBin, i
 	}
 }
 
-static void AddNoiseToSpectrum(channel* channel, int index, int count)
+static void AddNoiseToSpectrum(Channel* channel, int index, int count)
 {
-	if (!channel->rng.initialized)
+	if (!channel->Rng.Initialized)
 	{
 		int* sf = channel->ScaleFactors;
 		const unsigned short seed = (unsigned short)(543 * (sf[8] + sf[12] + sf[15] + 1));
-		rng_init(&channel->rng, seed);
+		RngInit(&channel->Rng, seed);
 	}
 	for (int i = 0; i < count; i++)
 	{
-		channel->Spectra[i + index] = rng_next(&channel->rng) / 65535.0 * 2.0 - 1.0;
+		channel->Spectra[i + index] = RngNext(&channel->Rng) / 65535.0 * 2.0 - 1.0;
 	}
 }
 
-static void rng_init(rng_cxt* rng, unsigned short seed)
+static void RngInit(RngCxt* rng, unsigned short seed)
 {
 	const int startValue = 0x4D93 * (seed ^ (seed >> 14));
 
-	rng->stateA = (unsigned short)(3 - startValue);
-	rng->stateB = (unsigned short)(2 - startValue);
-	rng->stateC = (unsigned short)(1 - startValue);
-	rng->stateD = (unsigned short)(0 - startValue);
-	rng->initialized = TRUE;
+	rng->StateA = (unsigned short)(3 - startValue);
+	rng->StateB = (unsigned short)(2 - startValue);
+	rng->StateC = (unsigned short)(1 - startValue);
+	rng->StateD = (unsigned short)(0 - startValue);
+	rng->Initialized = TRUE;
 }
 
-static unsigned short rng_next(rng_cxt* rng)
+static unsigned short RngNext(RngCxt* rng)
 {
-	const unsigned short t = (unsigned short)(rng->stateD ^ (rng->stateD << 5));
-	rng->stateD = rng->stateC;
-	rng->stateC = rng->stateB;
-	rng->stateB = rng->stateA;
-	rng->stateA = (unsigned short)(t ^ rng->stateA ^ ((t ^ (rng->stateA >> 5)) >> 4));
-	return rng->stateA;
+	const unsigned short t = (unsigned short)(rng->StateD ^ (rng->StateD << 5));
+	rng->StateD = rng->StateC;
+	rng->StateC = rng->StateB;
+	rng->StateB = rng->StateA;
+	rng->StateA = (unsigned short)(t ^ rng->StateA ^ ((t ^ (rng->StateA >> 5)) >> 4));
+	return rng->StateA;
 }

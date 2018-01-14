@@ -1,8 +1,8 @@
 #include "utility.h"
 #include <limits.h>
 
-int max(int a, int b) { return a > b ? a : b; }
-int min(int a, int b) { return a > b ? b : a; }
+int Max(int a, int b) { return a > b ? a : b; }
+int Min(int a, int b) { return a > b ? b : a; }
 
 unsigned int BitReverse32(unsigned int value, int bitCount)
 {
