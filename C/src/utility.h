@@ -12,3 +12,4 @@ int Min(int a, int b);
 unsigned int BitReverse32(unsigned int value, int bitCount);
 int SignExtend32(int value, int bits);
 short Clamp16(int value);
+int Round(double x);

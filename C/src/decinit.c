@@ -77,10 +77,16 @@ static At9Status InitFrame(Atrac9Handle* handle)
 {
 	const int blockCount = handle->Config.ChannelConfig.BlockCount;
 	handle->Frame.Config = &handle->Config;
+	int channelNum = 0;
 
 	for (int i = 0; i < blockCount; i++)
 	{
 		ERROR_CHECK(InitBlock(&handle->Frame.Blocks[i], &handle->Frame, i));
+
+		for(int c = 0; c < handle->Frame.Blocks[i].ChannelCount; c++)
+		{
+			handle->Frame.Channels[channelNum++] = &handle->Frame.Blocks[i].Channels[c];
+		}
 	}
 
 	return ERR_SUCCESS;

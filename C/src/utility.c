@@ -28,3 +28,9 @@ short Clamp16(int value)
 		return SHRT_MIN;
 	return (short)value;
 }
+
+int Round(double x)
+{
+	x += 0.5;
+	return (int)x - (x < (int)x);
+}

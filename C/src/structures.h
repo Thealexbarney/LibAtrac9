@@ -1,6 +1,7 @@
 #pragma once
 
 #define CONFIG_DATA_SIZE 4
+#define MAX_CHANNEL_COUNT 8
 #define MAX_BLOCK_COUNT 5
 #define MAX_BLOCK_CHANNEL_COUNT 2
 #define MAX_FRAME_SAMPLES 256
@@ -131,6 +132,7 @@ struct Block {
 struct Frame {
 	ConfigData* Config;
 	int FrameIndex;
+	Channel* Channels[MAX_CHANNEL_COUNT];
 	Block Blocks[MAX_BLOCK_COUNT];
 	int FrameNum;
 };

@@ -6,7 +6,6 @@
 #include "tables.h"
 #include "unpack.h"
 #include "utility.h"
-#include <math.h>
 #include <string.h>
 
 static At9Status DecodeFrame(Frame* frame, BitReaderCxt* br);
@@ -45,25 +44,18 @@ static At9Status DecodeFrame(Frame* frame, BitReaderCxt* br)
 	return ERR_SUCCESS;
 }
 
-static void PcmFloatToShort(Frame* frame, short* pcmOut)
+void PcmFloatToShort(Frame* frame, short* pcmOut)
 {
-	const int endSample = frame->Config->FrameSamples;
-	short* dest = pcmOut;
-	for (int d = 0, s = 0; s < endSample; d++, s++)
+	const int channelCount = frame->Config->ChannelCount;
+	const int sampleCount = frame->Config->FrameSamples;
+	Channel** channels = frame->Channels;
+	int i = 0;
+
+	for (int smpl = 0; smpl < sampleCount; smpl++)
 	{
-		for (int i = 0; i < frame->Config->ChannelConfig.BlockCount; i++)
+		for (int ch = 0; ch < channelCount; ch++, i++)
 		{
-			Block* block = &frame->Blocks[i];
-
-			for (int j = 0; j < block->ChannelCount; j++)
-			{
-				Channel* channel = &block->Channels[j];
-				double* pcmSrc = channel->Pcm;
-
-				const double sample = pcmSrc[d];
-				const int roundedSample = (int)floor(sample + 0.5);
-				*dest++ = Clamp16(roundedSample);
-			}
+			pcmOut[i] = Clamp16(Round(channels[ch]->Pcm[smpl]));
 		}
 	}
 }
