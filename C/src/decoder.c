@@ -15,7 +15,6 @@ static void PcmFloatToShort(Frame* frame, short* pcmOut);
 
 At9Status Decode(Atrac9Handle* handle, const unsigned char* audio, unsigned char* pcm, int* bytesUsed)
 {
-	handle->Frame.FrameNum++;
 	BitReaderCxt br;
 	InitBitReaderCxt(&br, audio);
 	ERROR_CHECK(DecodeFrame(&handle->Frame, &br));

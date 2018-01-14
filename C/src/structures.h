@@ -131,10 +131,8 @@ struct Block {
 
 struct Frame {
 	ConfigData* Config;
-	int FrameIndex;
 	Channel* Channels[MAX_CHANNEL_COUNT];
 	Block Blocks[MAX_BLOCK_COUNT];
-	int FrameNum;
 };
 
 typedef struct {
