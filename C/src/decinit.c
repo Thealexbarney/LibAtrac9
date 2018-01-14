@@ -6,6 +6,20 @@
 #include <string.h>
 #include <math.h>
 #include "utility.h"
+#include "huffCodes.h"
+
+static at9_status init_config_data(ConfigData* config, unsigned char * config_data);
+static at9_status read_config_data(ConfigData* config);
+static at9_status init_frame(atrac9_handle* handle);
+static at9_status init_block(block* block, frame* parent_frame, int block_index);
+static at9_status init_channel(channel* channel, block* parent_block, int channel_index);
+static void init_huffman_codebooks();
+static void init_huffman_set(const HuffmanCodebook* codebooks, int count);
+static void GenerateTrigTables(int sizeBits);
+static void GenerateShuffleTable(int sizeBits);
+static void init_mdct_tables(int frameSizePower);
+static void GenerateMdctWindow(int frameSizePower);
+static void GenerateImdctWindow(int frameSizePower);
 
 static int BlockTypeToChannelCount(BlockType block_type);
 
@@ -20,7 +34,7 @@ at9_status init_decoder(atrac9_handle* handle, unsigned char* config_data, int w
 	return ERR_SUCCESS;
 }
 
-at9_status init_config_data(ConfigData* config, unsigned char* config_data)
+static at9_status init_config_data(ConfigData* config, unsigned char* config_data)
 {
 	memcpy(config->ConfigData, config_data, CONFIG_DATA_SIZE);
 	ERROR_CHECK(read_config_data(config));
@@ -39,7 +53,7 @@ at9_status init_config_data(ConfigData* config, unsigned char* config_data)
 	return ERR_SUCCESS;
 }
 
-at9_status read_config_data(ConfigData* config)
+static at9_status read_config_data(ConfigData* config)
 {
 	bit_reader_cxt br;
 	init_bit_reader_cxt(&br, &config->ConfigData);
@@ -59,7 +73,7 @@ at9_status read_config_data(ConfigData* config)
 	return ERR_SUCCESS;
 }
 
-at9_status init_frame(atrac9_handle* handle)
+static at9_status init_frame(atrac9_handle* handle)
 {
 	const int block_count = handle->config.ChannelConfig.BlockCount;
 	handle->frame.config = &handle->config;
@@ -72,7 +86,7 @@ at9_status init_frame(atrac9_handle* handle)
 	return ERR_SUCCESS;
 }
 
-at9_status init_block(block* block, frame* parent_frame, int block_index)
+static at9_status init_block(block* block, frame* parent_frame, int block_index)
 {
 	block->Frame = parent_frame;
 	block->BlockIndex = block_index;
@@ -88,7 +102,7 @@ at9_status init_block(block* block, frame* parent_frame, int block_index)
 	return ERR_SUCCESS;
 }
 
-at9_status init_channel(channel* channel, block* parent_block, int channel_index)
+static at9_status init_channel(channel* channel, block* parent_block, int channel_index)
 {
 	channel->Block = parent_block;
 	channel->Frame = parent_block->Frame;
@@ -98,14 +112,14 @@ at9_status init_channel(channel* channel, block* parent_block, int channel_index
 	return ERR_SUCCESS;
 }
 
-void init_huffman_codebooks()
+static void init_huffman_codebooks()
 {
 	init_huffman_set(HuffmanScaleFactorsUnsigned, sizeof(HuffmanScaleFactorsUnsigned) / sizeof(HuffmanCodebook));
 	init_huffman_set(HuffmanScaleFactorsSigned, sizeof(HuffmanScaleFactorsSigned) / sizeof(HuffmanCodebook));
 	init_huffman_set((HuffmanCodebook*)HuffmanSpectrum, sizeof(HuffmanSpectrum) / sizeof(HuffmanCodebook));
 }
 
-void init_huffman_set(const HuffmanCodebook* codebooks, int count)
+static void init_huffman_set(const HuffmanCodebook* codebooks, int count)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -113,7 +127,7 @@ void init_huffman_set(const HuffmanCodebook* codebooks, int count)
 	}
 }
 
-void init_mdct_tables(int frameSizePower)
+static void init_mdct_tables(int frameSizePower)
 {
 	for (int i = 0; i < 9; i++)
 	{
@@ -124,7 +138,7 @@ void init_mdct_tables(int frameSizePower)
 	GenerateImdctWindow(frameSizePower);
 }
 
-void GenerateTrigTables(int sizeBits)
+static void GenerateTrigTables(int sizeBits)
 {
 	const int size = 1 << sizeBits;
 	double* sinTab = SinTables[sizeBits];
@@ -138,7 +152,7 @@ void GenerateTrigTables(int sizeBits)
 	}
 }
 
-void GenerateShuffleTable(int sizeBits)
+static void GenerateShuffleTable(int sizeBits)
 {
 	const int size = 1 << sizeBits;
 	int* table = ShuffleTables[sizeBits];
@@ -149,7 +163,7 @@ void GenerateShuffleTable(int sizeBits)
 	}
 }
 
-void GenerateMdctWindow(int frameSizePower)
+static void GenerateMdctWindow(int frameSizePower)
 {
 	const int frameSize = 1 << frameSizePower;
 	double* mdct = MdctWindow[frameSizePower - 6];
@@ -160,7 +174,7 @@ void GenerateMdctWindow(int frameSizePower)
 	}
 }
 
-void GenerateImdctWindow(int frameSizePower)
+static void GenerateImdctWindow(int frameSizePower)
 {
 	const int frameSize = 1 << frameSizePower;
 	double* imdct = ImdctWindow[frameSizePower - 6];

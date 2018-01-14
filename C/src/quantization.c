@@ -2,6 +2,9 @@
 #include <string.h>
 #include "tables.h"
 
+static void DequantizeQuantUnit(channel* channel, int band);
+static void ScaleSpectrumChannel(channel* channel);
+
 void DequantizeSpectra(block* block)
 {
 	for (int i = 0; i < block->ChannelCount; i++)
@@ -16,7 +19,7 @@ void DequantizeSpectra(block* block)
 	}
 }
 
- void DequantizeQuantUnit(channel* channel, int band)
+static void DequantizeQuantUnit(channel* channel, int band)
 {
 	const int subBandIndex = QuantUnitToCoeffIndex[band];
 	const int subBandCount = QuantUnitToCoeffCount[band];
@@ -39,7 +42,7 @@ void ScaleSpectrumBlock(block* block)
 	 }
  }
 
-void ScaleSpectrumChannel(channel* channel)
+static void ScaleSpectrumChannel(channel* channel)
 {
 	 const int quantUnitCount = channel->Block->QuantizationUnitCount;
 	 double* spectra = channel->Spectra;

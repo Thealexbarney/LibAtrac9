@@ -3,6 +3,15 @@
 #include "utility.h"
 #include <math.h>
 
+static void ApplyBandExtensionChannel(channel* channel);
+
+static void ScaleBexQuantUnits(double* spectra, double* scales, int startUnit, int totalUnits);
+static void FillHighFrequencies(double* spectra, int groupABin, int groupBBin, int groupCBin, int totalBins);
+static void AddNoiseToSpectrum(channel* channel, int index, int count);
+
+static void rng_init(rng_cxt* rng, unsigned short seed);
+static unsigned short rng_next(rng_cxt* rng);
+
 void ApplyBandExtension(block* block)
 {
 	if (!block->BandExtensionEnabled || !block->HasExtensionData) return;
@@ -13,7 +22,7 @@ void ApplyBandExtension(block* block)
 	}
 }
 
-void ApplyBandExtensionChannel(channel* channel)
+static void ApplyBandExtensionChannel(channel* channel)
 {
 	const int groupAUnit = channel->Block->QuantizationUnitCount;
 	int* scaleFactors = channel->ScaleFactors;
@@ -126,7 +135,7 @@ void ApplyBandExtensionChannel(channel* channel)
 	}
 }
 
-void ScaleBexQuantUnits(double* spectra, double* scales, int startUnit, int totalUnits)
+static void ScaleBexQuantUnits(double* spectra, double* scales, int startUnit, int totalUnits)
 {
 	for (int i = startUnit; i < totalUnits; i++)
 	{
@@ -137,7 +146,7 @@ void ScaleBexQuantUnits(double* spectra, double* scales, int startUnit, int tota
 	}
 }
 
-void FillHighFrequencies(double* spectra, int groupABin, int groupBBin, int groupCBin, int totalBins)
+static void FillHighFrequencies(double* spectra, int groupABin, int groupBBin, int groupCBin, int totalBins)
 {
 	for (int i = 0; i < groupBBin - groupABin; i++)
 	{
@@ -155,7 +164,7 @@ void FillHighFrequencies(double* spectra, int groupABin, int groupBBin, int grou
 	}
 }
 
-void AddNoiseToSpectrum(channel* channel, int index, int count)
+static void AddNoiseToSpectrum(channel* channel, int index, int count)
 {
 	if (!channel->rng.initialized)
 	{
@@ -169,7 +178,7 @@ void AddNoiseToSpectrum(channel* channel, int index, int count)
 	}
 }
 
-void rng_init(rng_cxt* rng, unsigned short seed)
+static void rng_init(rng_cxt* rng, unsigned short seed)
 {
 	const int startValue = 0x4D93 * (seed ^ (seed >> 14));
 
@@ -180,7 +189,7 @@ void rng_init(rng_cxt* rng, unsigned short seed)
 	rng->initialized = TRUE;
 }
 
-unsigned short rng_next(rng_cxt* rng)
+static unsigned short rng_next(rng_cxt* rng)
 {
 	const unsigned short t = (unsigned short)(rng->stateD ^ (rng->stateD << 5));
 	rng->stateD = rng->stateC;

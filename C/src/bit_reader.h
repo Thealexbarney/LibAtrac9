@@ -5,6 +5,8 @@ typedef struct {
 	int position;
 } bit_reader_cxt;
 
+// Make MSVC compiler happy. Leave const in for value parameters
+
 void init_bit_reader_cxt(bit_reader_cxt* br, const void * buffer);
 int peek_int(bit_reader_cxt* br, const int bits);
 int read_int(bit_reader_cxt* br, const int bits);

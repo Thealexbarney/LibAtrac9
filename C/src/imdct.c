@@ -1,6 +1,8 @@
 #include "imdct.h"
 #include "tables.h"
 
+static void Dct4(mdct* mdct, double* input, double* output);
+
 void RunImdct(mdct* mdct, double* input, double* output)
 {
 	const int size = 1 << mdct->bits;
@@ -20,7 +22,7 @@ void RunImdct(mdct* mdct, double* input, double* output)
 	}
 }
 
-void Dct4(mdct* mdct, double* input, double* output)
+static void Dct4(mdct* mdct, double* input, double* output)
 {
 	int MdctBits = mdct->bits;
 	int MdctSize = 1 << MdctBits;

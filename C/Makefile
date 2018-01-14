@@ -4,10 +4,9 @@ CC = gcc
 AR = ar
 SFLAGS = -O2
 CFLAGS = -Wall -Wextra -std=c99
-LFLAGS =
 SHARED_SFLAGS = $(SFLAGS) -flto
 SHARED_CFLAGS = $(CFLAGS) -fPIC
-SHARED_LFLAGS = $(LFLAGS) -shared
+LFLAGS = -shared -s -Wl,--version-script=libatrac9.version
 
 SRCDIR = src
 OBJDIR = obj
@@ -40,7 +39,7 @@ create_bin_dir:
 	@$(MKDIR) $(BINDIR)
 
 $(SHARED_NAME): $(SHARED_OBJS)
-	$(CC) $(SHARED_OBJS) $(SHARED_SFLAGS) $(SHARED_LFLAGS) -o $@
+	$(CC) $(SHARED_OBJS) $(SHARED_SFLAGS) $(LFLAGS) -o $@
 
 $(SHARED_OBJS): $(SHARED_OBJDIR)/%.o : $(SRCDIR)/%.c
 	$(CC) $(SHARED_SFLAGS) $(SHARED_CFLAGS) -c $< -o $@

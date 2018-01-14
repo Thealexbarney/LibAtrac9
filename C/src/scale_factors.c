@@ -4,6 +4,11 @@
 #include "tables.h"
 #include "utility.h"
 
+static void ReadClcOffset(channel* channel, bit_reader_cxt* br);
+static void ReadVlcDeltaOffset(channel* channel, bit_reader_cxt* br);
+static void ReadVlcDistanceToBaseline(channel* channel, bit_reader_cxt* br, int* baseline, int baselineLength);
+static void ReadVlcDeltaOffsetWithBaseline(channel* channel, bit_reader_cxt* br, int* baseline, int baselineLength);
+
 at9_status read_scale_factors(channel * channel, bit_reader_cxt * br)
 {
 	memset(channel->ScaleFactors, 0, sizeof(channel->ScaleFactors));
@@ -62,7 +67,7 @@ at9_status read_scale_factors(channel * channel, bit_reader_cxt * br)
 	return ERR_SUCCESS;
 }
 
-void ReadClcOffset(channel* channel, bit_reader_cxt* br)
+static void ReadClcOffset(channel* channel, bit_reader_cxt* br)
 {
 	const int maxBits = 5;
 	int* sf = channel->ScaleFactors;
@@ -75,7 +80,7 @@ void ReadClcOffset(channel* channel, bit_reader_cxt* br)
 	}
 }
 
-void ReadVlcDeltaOffset(channel* channel, bit_reader_cxt* br)
+static void ReadVlcDeltaOffset(channel* channel, bit_reader_cxt* br)
 {
 	const int weightIndex = read_int(br, 3);
 	const unsigned char* weights = ScaleFactorWeights[weightIndex];
@@ -99,7 +104,7 @@ void ReadVlcDeltaOffset(channel* channel, bit_reader_cxt* br)
 	}
 }
 
-void ReadVlcDistanceToBaseline(channel* channel, bit_reader_cxt* br, int* baseline, int baselineLength)
+static void ReadVlcDistanceToBaseline(channel* channel, bit_reader_cxt* br, int* baseline, int baselineLength)
 {
 	int* sf = channel->ScaleFactors;
 	const int bit_length = read_int(br, 2) + 2;
@@ -118,7 +123,7 @@ void ReadVlcDistanceToBaseline(channel* channel, bit_reader_cxt* br, int* baseli
 	}
 }
 
-void ReadVlcDeltaOffsetWithBaseline(channel* channel, bit_reader_cxt* br, int* baseline, int baselineLength)
+static void ReadVlcDeltaOffsetWithBaseline(channel* channel, bit_reader_cxt* br, int* baseline, int baselineLength)
 {
 	int* sf = channel->ScaleFactors;
 	const int baseValue = read_offset_binary(br, 5);

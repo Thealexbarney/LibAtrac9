@@ -7,6 +7,12 @@
 #include <math.h>
 #include "utility.h"
 #include "band_extension.h"
+#include "bit_reader.h"
+
+static at9_status DecodeFrame(frame* frame, bit_reader_cxt* br);
+static void ImdctBlock(block* block);
+static void ApplyIntensityStereo(block* block);
+static void PcmFloatToShort(frame* frame, short* pcmOut);
 
 at9_status Decode(atrac9_handle* handle, const unsigned char* audio, unsigned char* pcm, int* bytesUsed)
 {
@@ -21,7 +27,7 @@ at9_status Decode(atrac9_handle* handle, const unsigned char* audio, unsigned ch
 	return ERR_SUCCESS;
 }
 
-at9_status DecodeFrame(frame* frame, bit_reader_cxt* br)
+static at9_status DecodeFrame(frame* frame, bit_reader_cxt* br)
 {
 	ERROR_CHECK(UnpackFrame(frame, br));
 
@@ -39,7 +45,7 @@ at9_status DecodeFrame(frame* frame, bit_reader_cxt* br)
 	return ERR_SUCCESS;
 }
 
-void PcmFloatToShort(frame* frame, short* pcmOut)
+static void PcmFloatToShort(frame* frame, short* pcmOut)
 {
 	const int endSample = frame->config->FrameSamples;
 	short* dest = pcmOut;
@@ -62,7 +68,7 @@ void PcmFloatToShort(frame* frame, short* pcmOut)
 	}
 }
 
-void ImdctBlock(block* block)
+static void ImdctBlock(block* block)
 {
 	for (int i = 0; i < block->ChannelCount; i++)
 	{
@@ -72,7 +78,7 @@ void ImdctBlock(block* block)
 	}
 }
 
-void ApplyIntensityStereo(block* block)
+static void ApplyIntensityStereo(block* block)
 {
 	if (block->BlockType != Stereo) return;
 
