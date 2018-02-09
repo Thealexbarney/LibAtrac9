@@ -103,10 +103,9 @@ static At9Status ReadBandParams(Block* block, BitReaderCxt* br)
 	block->BandCount = ReadInt(br, 4) + minBandCount;
 	block->QuantizationUnitCount = BandToQuantUnitCount[block->BandCount];
 
-	if (block->BandCount < minBandCount || block->BandCount >
-		MaxBandCount[block->Config->SampleRateIndex])
+	if (block->BandCount > MaxBandCount[block->Config->SampleRateIndex])
 	{
-		return ERR_SUCCESS;
+		return ERR_UNPACK_BAND_PARAMS_INVALID;
 	}
 
 	if (block->BlockType == Stereo)
@@ -118,6 +117,11 @@ static At9Status ReadBandParams(Block* block, BitReaderCxt* br)
 	else
 	{
 		block->StereoBand = block->BandCount;
+	}
+
+	if (block->StereoBand > block->BandCount)
+	{
+		return ERR_UNPACK_BAND_PARAMS_INVALID;
 	}
 
 	block->BandExtensionEnabled = ReadInt(br, 1);
