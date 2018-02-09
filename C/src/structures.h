@@ -19,9 +19,9 @@ typedef enum BlockType {
 } BlockType;
 
 typedef struct {
-	int BlockCount;
-	int ChannelCount;
-	enum BlockType Types[MAX_BLOCK_COUNT];
+	unsigned char BlockCount;
+	unsigned char ChannelCount;
+	unsigned char Types[MAX_BLOCK_COUNT];
 } ChannelConfig;
 
 typedef struct {
@@ -143,9 +143,9 @@ typedef struct {
 } Atrac9Handle;
 
 typedef struct {
-	int GroupBUnit;
-	int GroupCUnit;
-	int BandCount;
+	char GroupBUnit;
+	char GroupCUnit;
+	char BandCount;
 } BexGroup;
 
 typedef struct {

@@ -3,6 +3,8 @@
 #include "utility.h"
 #include <string.h>
 
+static unsigned char GradientCurves[48][48];
+
 At9Status CreateGradient(Block* block)
 {
 	int valueCount = block->GradientEndValue - block->GradientStartValue;
@@ -114,6 +116,26 @@ void CalculatePrecisions(Channel* channel)
 		{
 			channel->PrecisionsFine[i] = channel->Precisions[i] - 15;
 			channel->Precisions[i] = 15;
+		}
+	}
+}
+
+static const unsigned char BaseCurve[48] =
+{
+	1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+	15, 6, 18, 19, 20, 21, 22, 23, 24, 25, 26, 26, 27, 27, 28, 28, 28, 29, 29,
+	29, 29, 30, 30, 30, 30
+};
+
+void GenerateGradientCurves()
+{
+	const int baseLength = sizeof(BaseCurve) / sizeof(BaseCurve[0]);	
+
+	for (int length = 1; length <= baseLength; length++)
+	{
+		for (int i = 0; i < length; i++)
+		{
+			GradientCurves[length - 1][i] = BaseCurve[i * baseLength / length];
 		}
 	}
 }

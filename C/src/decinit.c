@@ -1,4 +1,5 @@
 #include "decinit.h"
+#include "bit_allocation.h"
 #include "bit_reader.h"
 #include "error_codes.h"
 #include "huffCodes.h"
@@ -29,6 +30,7 @@ At9Status InitDecoder(Atrac9Handle* handle, unsigned char* configData, int wleng
 	ERROR_CHECK(InitFrame(handle));
 	InitMdctTables(handle->Config.FrameSamplesPower);
 	InitHuffmanCodebooks();
+	GenerateGradientCurves();
 	handle->Wlength = wlength;
 	handle->Initialized = 1;
 	return ERR_SUCCESS;
@@ -83,7 +85,7 @@ static At9Status InitFrame(Atrac9Handle* handle)
 	{
 		ERROR_CHECK(InitBlock(&handle->Frame.Blocks[i], &handle->Frame, i));
 
-		for(int c = 0; c < handle->Frame.Blocks[i].ChannelCount; c++)
+		for (int c = 0; c < handle->Frame.Blocks[i].ChannelCount; c++)
 		{
 			handle->Frame.Channels[channelNum++] = &handle->Frame.Blocks[i].Channels[c];
 		}

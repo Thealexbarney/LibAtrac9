@@ -1,4 +1,5 @@
 #include "unpack.h"
+#include "band_extension.h"
 #include "bit_allocation.h"
 #include "huffCodes.h"
 #include "scale_factors.h"
@@ -254,7 +255,7 @@ static At9Status ReadExtensionParams(Block* block, BitReaderCxt* br)
 	BexReadHeader(&block->Channels[0], br, bexBand);
 
 	block->BexDataLength = ReadInt(br, 5);
-	if (block->BexDataLength <= 0) return ERR_SUCCESS;
+	if (block->BexDataLength == 0) return ERR_SUCCESS;
 	const int bexDataEnd = br->Position + block->BexDataLength;
 
 	BexReadData(&block->Channels[0], br, bexBand);
