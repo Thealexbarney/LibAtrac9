@@ -169,11 +169,11 @@ static At9Status ReadGradientParams(Block* block, BitReaderCxt* br)
 	{
 		return ERR_UNPACK_GRAD_BOUNDARY_INVALID;
 	}
-	if (block->GradientStartUnit < 1 || block->GradientStartUnit >= 48)
+	if (block->GradientStartUnit < 0 || block->GradientStartUnit >= 48)
 	{
 		return ERR_UNPACK_GRAD_START_UNIT_OOB;
 	}
-	if (block->GradientEndUnit < 1 || block->GradientEndUnit >= 48)
+	if (block->GradientEndUnit < 0 || block->GradientEndUnit >= 48)
 	{
 		return ERR_UNPACK_GRAD_END_UNIT_OOB;
 	}
