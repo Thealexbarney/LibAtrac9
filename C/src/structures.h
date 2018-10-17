@@ -130,6 +130,7 @@ struct Block {
 };
 
 struct Frame {
+	int IndexInSuperframe;
 	ConfigData* Config;
 	Channel* Channels[MAX_CHANNEL_COUNT];
 	Block Blocks[MAX_BLOCK_COUNT];

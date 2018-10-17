@@ -32,7 +32,20 @@ At9Status UnpackFrame(Frame* frame, BitReaderCxt* br)
 	for (int i = 0; i < blockCount; i++)
 	{
 		ERROR_CHECK(UnpackBlock(&frame->Blocks[i], br));
+
+		if (frame->Blocks[i].FirstInSuperframe && frame->IndexInSuperframe)
+		{
+			return ERR_UNPACK_SUPERFRAME_FLAG_INVALID;
+		}
 	}
+
+	frame->IndexInSuperframe++;
+
+	if (frame->IndexInSuperframe == frame->Config->FramesPerSuperframe)
+	{
+		frame->IndexInSuperframe = 0;
+	}
+
 	return ERR_SUCCESS;
 }
 
