@@ -2,11 +2,12 @@ NAME = libatrac9
 
 CC = gcc
 AR = ar
+
 SFLAGS = -O2
-CFLAGS = -Wall -Wextra -std=c99
+CFLAGS = $(EXTRA_CFLAGS) -Wall -Wextra -std=c99
 SHARED_SFLAGS = $(SFLAGS) -flto
 SHARED_CFLAGS = $(CFLAGS) -fPIC
-LFLAGS = -shared -s -Wl,--version-script=libatrac9.version
+LDFLAGS = -shared -s -Wl,--version-script=libatrac9.version
 
 SRCDIR = src
 OBJDIR = obj
@@ -18,8 +19,10 @@ SRCS = $(wildcard $(SRCDIR)/*.c)
 STATIC_OBJS = $(SRCS:$(SRCDIR)/%.c=$(STATIC_OBJDIR)/%.o)
 SHARED_OBJS = $(SRCS:$(SRCDIR)/%.c=$(SHARED_OBJDIR)/%.o)
 
-STATIC_NAME = $(BINDIR)/$(NAME).a
-SHARED_NAME = $(BINDIR)/$(NAME).so
+STATIC_FILENAME = $(NAME).a
+SHARED_FILENAME = $(NAME).so
+STATIC_NAME = $(BINDIR)/$(STATIC_FILENAME)
+SHARED_NAME = $(BINDIR)/$(SHARED_FILENAME)
 
 MKDIR = mkdir -p
 RM = rm -f
@@ -39,7 +42,7 @@ create_bin_dir:
 	@$(MKDIR) $(BINDIR)
 
 $(SHARED_NAME): $(SHARED_OBJS)
-	$(CC) $(SHARED_OBJS) $(SHARED_SFLAGS) $(LFLAGS) -o $@
+	$(CC) $(SHARED_OBJS) $(SHARED_SFLAGS) $(LDFLAGS) -o $@
 
 $(SHARED_OBJS): $(SHARED_OBJDIR)/%.o : $(SRCDIR)/%.c
 	$(CC) $(SHARED_SFLAGS) $(SHARED_CFLAGS) -c $< -o $@
