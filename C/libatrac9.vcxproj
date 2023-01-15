@@ -121,6 +121,9 @@
       <ConformanceMode>true</ConformanceMode>
       <CompileAs>CompileAsC</CompileAs>
       <PreprocessorDefinitions>_WINDLL;COMPILING_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
