@@ -7,6 +7,7 @@ SFLAGS = -O2
 CFLAGS = $(EXTRA_CFLAGS) -Wall -Wextra -std=c99
 SHARED_SFLAGS = $(SFLAGS) -flto
 SHARED_CFLAGS = $(CFLAGS) -fPIC
+STATIC_CFLAGS = $(CFLAGS) -DLIBATRAC9_STATIC_DEFINE
 LDFLAGS = -shared -s -Wl,--version-script=libatrac9.version
 
 SRCDIR = src
@@ -51,7 +52,7 @@ $(STATIC_NAME): $(STATIC_OBJS)
 	$(AR) rcs $@ $^
 
 $(STATIC_OBJS): $(STATIC_OBJDIR)/%.o : $(SRCDIR)/%.c
-	$(CC) $(SFLAGS) $(CFLAGS) -c $< -o $@
+	$(CC) $(SFLAGS) $(STATIC_CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(SHARED_OBJS) $(SHARED_NAME) $(STATIC_OBJS) $(STATIC_NAME)
