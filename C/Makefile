@@ -1,7 +1,7 @@
 NAME = libatrac9
 
-CC = gcc
-AR = ar
+CC ?= gcc
+AR ?= ar
 
 SFLAGS = -O2
 CFLAGS = $(EXTRA_CFLAGS) -Wall -Wextra -std=c99
